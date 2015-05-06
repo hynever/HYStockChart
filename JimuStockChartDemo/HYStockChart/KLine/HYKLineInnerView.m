@@ -9,7 +9,6 @@
 #import "HYKLineInnerView.h"
 #import "HYConstant.h"
 #import "HYStockModel.h"
-#import "HYKLineModel.h"
 #import "HYKLine.h"
 #import "HYKeyValueObserver.h"
 #import "Masonry.h"
@@ -212,6 +211,12 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
         HYKLineModel *kLineModel = [HYKLineModel modelWithOpen:openPoint close:closePoint high:highPoint low:lowPoint];
         [self.needDrawKLineModels addObject:kLineModel];
     }
+    //执行代理方法
+    if (self.delegate) {
+        if ([self.delegate respondsToSelector:@selector(kLineInnerViewCurrentMaxPrice:minPrice:)]) {
+            [self.delegate kLineInnerViewCurrentMaxPrice:maxAssert minPrice:minAssert];
+        }
+    }
     return self.needDrawKLineModels;
 }
 
@@ -317,6 +322,12 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
                 }];
                 [verticalView layoutIfNeeded];
                 verticalView.hidden = NO;
+                //执行代理方法
+                if (self.delegate) {
+                    if ([self.delegate respondsToSelector:@selector(kLineInnerViewLongPressKLineModel:)]) {
+                        [self.delegate kLineInnerViewLongPressKLineModel:kLineModel];
+                    }
+                }
                 return;
             }
         }

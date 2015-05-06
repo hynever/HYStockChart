@@ -7,6 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HYKLineModel.h"
+
+@protocol HYKLineInnerViewDelegate;
 
 /************************展示所有K线的View************************/
 @interface HYKLineInnerView : UIView
@@ -31,11 +34,34 @@
  */
 @property(nonatomic,weak,readonly) UIScrollView *scrollView;
 
+/**
+ *  代理
+ */
+@property(nonatomic,weak) id<HYKLineInnerViewDelegate> delegate;
+
 
 /**
  *  画InnerView上的所有图
  */
 -(void)drawInnerView;
 
+
+@end
+
+
+
+/************************HYKLineInnerView的代理方法************************/
+@protocol HYKLineInnerViewDelegate <NSObject>
+
+@optional
+/**
+ *  长按后展示手指按着的HYKLineModel
+ */
+-(void)kLineInnerViewLongPressKLineModel:(HYKLineModel *)kLineModel;
+
+/**
+ *  当前InnerView中的最大股价和最小股价
+ */
+-(void)kLineInnerViewCurrentMaxPrice:(CGFloat)maxPrice minPrice:(CGFloat)minPrice;
 
 @end
