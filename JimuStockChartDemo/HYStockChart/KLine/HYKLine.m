@@ -33,20 +33,38 @@
 -(void)draw
 {
     //如果没有数据，直接返回
-    if (!self.kLineModel || !self.context) {
+    if (!self.kLineModel || !self.context || !self.stockModel) {
         return;
     }
     
     CGContextRef context = self.context;
     
+//    CGPoint highPoint = self.kLineModel.highPoint;
+//    highPoint.x += 0;
+//    self.kLineModel.highPoint = highPoint;
+//    
+//    CGPoint lowPoint = self.kLineModel.lowPoint;
+//    lowPoint.x = highPoint.x;
+//    self.kLineModel.lowPoint = lowPoint;
+    
     //设置画笔颜色
     UIColor *strokeColor = nil;
+    //增长的
     if (self.kLineModel.openPoint.y < self.kLineModel.closePoint.y) {
-        strokeColor = [self increaseColor];
-    }else{
         strokeColor = [self decreaseColor];
     }
+    //减少的
+    else{
+        strokeColor = [self increaseColor];
+    }
     CGContextSetStrokeColorWithColor(context, strokeColor.CGColor);
+    
+    //画中间的开收盘线
+    //设置开收盘线的宽度
+    CGContextSetLineWidth(context, self.solidLineWidth);
+    //画实体线
+    const CGPoint solidPoints[] = {self.kLineModel.openPoint,self.kLineModel.closePoint};
+    CGContextStrokeLineSegments(context, solidPoints, 2);
     
     //画上影线和下影线
     //设置上影线和下影线的线的宽度
@@ -55,12 +73,9 @@
     const CGPoint shadowPoints[] = {self.kLineModel.highPoint,self.kLineModel.lowPoint};
     CGContextStrokeLineSegments(context, shadowPoints, 2);
     
-    //画中间的开收盘线
-    //设置开收盘线的宽度
-    CGContextSetLineWidth(context, self.solidLineWidth);
-    //画实体线
-    const CGPoint solidPoints[] = {self.kLineModel.openPoint,self.kLineModel.closePoint};
-    CGContextStrokeLineSegments(context, solidPoints, 2);
+    NSString *highText = [NSString stringWithFormat:@"%.2f",self.stockModel.high];
+    CGPoint drawPoint = (CGPoint){self.kLineModel.highPoint.x-8,self.kLineModel.highPoint.y};
+    [highText drawAtPoint:drawPoint withAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:5],NSForegroundColorAttributeName:[UIColor whiteColor]}];
 }
 
 /**

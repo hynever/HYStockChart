@@ -29,7 +29,7 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    self.kLineView.backgroundColor = [UIColor clearColor];
+    self.kLineView.backgroundColor = [UIColor whiteColor];
     [self.updateDataBtn setTitle:@"更新数据" forState:UIControlStateNormal];
     self.updateDataBtn.backgroundColor = [UIColor greenColor];
 }
@@ -90,7 +90,6 @@
     NSURL *URL = [[NSBundle mainBundle] URLForResource:@"stock.csv" withExtension:nil];
     NSArray *arr = [NSArray arrayWithContentsOfCSVURL:URL options:CHCSVParserOptionsUsesFirstLineAsKeys];
     NSArray *modelArr = [HYStockModel objectArrayWithKeyValuesArray:arr];
-    self.stockView.stockData = modelArr;
     self.kLineView.stockModels = modelArr;
 }
 

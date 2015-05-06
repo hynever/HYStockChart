@@ -36,7 +36,7 @@
         self.needDrawStockModels = [NSMutableArray array];
         self.priceView.backgroundColor = [UIColor redColor];
         self.timeView.backgroundColor = [UIColor yellowColor];
-        self.scrollView.backgroundColor = [UIColor clearColor];
+        self.scrollView.backgroundColor = [UIColor whiteColor];
 //        self.kLineInnerView.backgroundColor = [UIColor whiteColor];
     }
     return self;

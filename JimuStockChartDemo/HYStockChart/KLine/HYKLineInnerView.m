@@ -21,7 +21,7 @@ static NSString * const kHYStockChartZoomScaleKey = @"zoomScale";
 
 @property(nonatomic,strong) NSMutableArray *needDrawStockModels;
 
-@property(nonatomic,assign) NSInteger needDrawStockStartIndex;
+@property(nonatomic,assign) NSUInteger needDrawStockStartIndex;
 
 @property(nonatomic,assign,readonly) CGFloat startXPosition;
 
@@ -39,8 +39,9 @@ static NSString * const kHYStockChartZoomScaleKey = @"zoomScale";
         self.kLineWidth = 20;
         self.kLineGap = HYStockChartKLineGap;
         self.needDrawStockModels = [NSMutableArray array];
-        self.needDrawStockStartIndex = 0;
+        _needDrawStockStartIndex = 0;
         self.oldContentOffsetX = 0;
+        self.backgroundColor = [UIColor whiteColor];
     }
     return self;
 }
@@ -51,17 +52,22 @@ static NSString * const kHYStockChartZoomScaleKey = @"zoomScale";
     if (!self.stockModels) {
         return;
     }
-    //将stockModel转换成坐标模型
     //先提取需要展示的stockModel
     [self private_extractNeedDrawModels];
+    //将stockModel转换成坐标模型
     NSArray *kLineModels = [self private_convertToKLineModelWithStockModels:self.needDrawStockModels];
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextClearRect(context, rect);
+//    CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
+//    CGContextFillRect(context, self.bounds);
     HYKLine *kLine = [[HYKLine alloc] initWithContext:context];
     kLine.solidLineWidth = self.kLineWidth;
+    NSInteger idx = 0;
     for (HYKLineModel *kLineModel in kLineModels) {
         kLine.kLineModel = kLineModel;
+        kLine.stockModel = self.needDrawStockModels[idx];
         [kLine draw];
+        idx++;
     }
 }
 
@@ -93,18 +99,18 @@ static NSString * const kHYStockChartZoomScaleKey = @"zoomScale";
     CGFloat lineGap = self.kLineGap;
     CGFloat lineWidth = self.kLineWidth;
     NSInteger leftArrCount = self.needDrawStockStartIndex;
-    CGFloat startXPosition = (leftArrCount+1)*lineGap + leftArrCount*lineWidth;
+    CGFloat startXPosition = (leftArrCount+1)*lineGap + leftArrCount*lineWidth+lineWidth/2;
 //    self.scrollView.contentOffset = CGPointMake(startXPosition, 0);
     return startXPosition;
 }
 
 #pragma mark needDrawStockStartIndex的get方法
--(NSInteger)needDrawStockStartIndex
+-(NSUInteger)needDrawStockStartIndex
 {
     CGFloat lineGap = self.kLineGap;
     CGFloat lineWidth = self.kLineWidth;
     CGFloat scrollViewOffsetX = self.scrollView.contentOffset.x < 0 ? 0 : self.scrollView.contentOffset.x;
-    NSInteger leftArrCount = (scrollViewOffsetX - lineGap)/(lineWidth+lineGap);
+    NSUInteger leftArrCount = ABS(scrollViewOffsetX - lineGap)/(lineWidth+lineGap);
     _needDrawStockStartIndex = leftArrCount;
     return _needDrawStockStartIndex;
 }
@@ -155,16 +161,22 @@ static NSString * const kHYStockChartZoomScaleKey = @"zoomScale";
     NSMutableArray *kLineModels = [NSMutableArray array];
 
 #warning 这里暂时没有处理实体线和上下影线的宽度引起的问题
-    [stockModels enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        HYStockModel *stockModel = (HYStockModel *)obj;
+    NSInteger stockModelsCount = stockModels.count;
+    for (NSInteger idx = 0; idx < stockModelsCount; ++idx) {
+        HYStockModel *stockModel = stockModels[idx];
         CGFloat xPosition = self.startXPosition + idx*(self.kLineWidth+self.kLineGap);
         CGPoint openPoint = CGPointMake(xPosition, ABS(maxY - (stockModel.open-minAssert)/unitValue));
-        CGPoint closePoint = CGPointMake(xPosition, ABS(maxY - (stockModel.close-minAssert)/unitValue));
+        
+        CGFloat closePointY = ABS(maxY - (stockModel.close-minAssert)/unitValue);
+        if (ABS(closePointY - openPoint.y) < 1) {
+            closePointY = openPoint.y > closePointY ? openPoint.y+1 : openPoint.y-1;
+        }
+        CGPoint closePoint = CGPointMake(xPosition, closePointY);
         CGPoint highPoint = CGPointMake(xPosition, ABS(maxY - (stockModel.high-minAssert)/unitValue));
         CGPoint lowPoint = CGPointMake(xPosition, ABS(maxY - (stockModel.low-minAssert)/unitValue));
         HYKLineModel *kLineModel = [HYKLineModel modelWithOpen:openPoint close:closePoint high:highPoint low:lowPoint];
         [kLineModels addObject:kLineModel];
-    }];
+    }
     return kLineModels;
 }
 
@@ -197,8 +209,8 @@ static NSString * const kHYStockChartZoomScaleKey = @"zoomScale";
 
 -(void)dealloc
 {
-    [self removeObserver:_scrollView forKeyPath:kHYStockChartContentOffsetKey];
-    [self removeObserver:_scrollView forKeyPath:kHYStockChartZoomScaleKey];
+    [_scrollView removeObserver:self forKeyPath:kHYStockChartContentOffsetKey];
+    [_scrollView removeObserver:self forKeyPath:kHYStockChartZoomScaleKey];
 }
 
 @end

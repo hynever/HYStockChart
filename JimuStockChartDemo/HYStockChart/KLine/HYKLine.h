@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "HYKLineModel.h"
+#import "HYStockModel.h"
 
 /************************K线************************/
 @interface HYKLine : NSObject
@@ -21,6 +22,8 @@
  *  实线的宽度
  */
 @property(nonatomic,assign) CGFloat solidLineWidth;
+
+@property(nonatomic,strong) HYStockModel *stockModel;
 
 /**
  *  根据context初始化
