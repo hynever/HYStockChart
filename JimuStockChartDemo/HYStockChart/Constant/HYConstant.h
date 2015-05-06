@@ -35,4 +35,5 @@ extern CGFloat const HYStockChartKLineMaxWidth;
  */
 extern CGFloat const HYStockChartKLineMinWidth;
 
+
 #endif

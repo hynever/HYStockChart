@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FB06A9D71AFA20F7009E27E5 /* HYKLineForeView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB06A9D61AFA20F7009E27E5 /* HYKLineForeView.m */; };
 		FB4AC6DB1AF879360005707E /* HYDataConvertTool.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4AC6DA1AF879360005707E /* HYDataConvertTool.m */; };
 		FB4AC6E31AF8F4170005707E /* HYKeyValueObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4AC6E21AF8F4170005707E /* HYKeyValueObserver.m */; };
 		FB76B74D1AF71D6300FDE90B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FB76B74C1AF71D6300FDE90B /* main.m */; };
@@ -55,6 +56,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FB06A9D51AFA20F7009E27E5 /* HYKLineForeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYKLineForeView.h; sourceTree = "<group>"; };
+		FB06A9D61AFA20F7009E27E5 /* HYKLineForeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYKLineForeView.m; sourceTree = "<group>"; };
 		FB4AC6D91AF879360005707E /* HYDataConvertTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYDataConvertTool.h; sourceTree = "<group>"; };
 		FB4AC6DA1AF879360005707E /* HYDataConvertTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYDataConvertTool.m; sourceTree = "<group>"; };
 		FB4AC6E11AF8F4170005707E /* HYKeyValueObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYKeyValueObserver.h; sourceTree = "<group>"; };
@@ -284,6 +287,8 @@
 				FB76B7C91AF75B5E00FDE90B /* HYKLine.m */,
 				FB76B7CA1AF75B5E00FDE90B /* HYKLineModel.h */,
 				FB76B7CB1AF75B5E00FDE90B /* HYKLineModel.m */,
+				FB06A9D51AFA20F7009E27E5 /* HYKLineForeView.h */,
+				FB06A9D61AFA20F7009E27E5 /* HYKLineForeView.m */,
 				FB76B8001AF7B28F00FDE90B /* HYKLineInnerView.h */,
 				FB76B8011AF7B28F00FDE90B /* HYKLineInnerView.m */,
 				FB883DF51AF7BFA100E634EF /* HYKLineView.h */,
@@ -470,6 +475,7 @@
 				FB76B7FA1AF76CE800FDE90B /* NSObject+MJCoding.m in Sources */,
 				FB76B74D1AF71D6300FDE90B /* main.m in Sources */,
 				FB76B7F81AF76CE800FDE90B /* MJProperty.m in Sources */,
+				FB06A9D71AFA20F7009E27E5 /* HYKLineForeView.m in Sources */,
 				FB883DF01AF7B8D200E634EF /* HYStockModel.m in Sources */,
 				FB883DF41AF7BA2100E634EF /* HYConstant.m in Sources */,
 				FB76B7FD1AF76CE800FDE90B /* NSString+MJExtension.m in Sources */,

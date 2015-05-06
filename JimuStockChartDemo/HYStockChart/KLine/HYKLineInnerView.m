@@ -23,6 +23,8 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
 
 @property(nonatomic,strong) NSMutableArray *needDrawStockModels;
 
+@property(nonatomic,strong) NSMutableArray *needDrawKLineModels;
+
 @property(nonatomic,assign) NSUInteger needDrawStockStartIndex;
 
 @property(nonatomic,assign,readonly) CGFloat startXPosition;
@@ -43,6 +45,7 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
         self.kLineWidth = 20;
         self.kLineGap = HYStockChartKLineGap;
         self.needDrawStockModels = [NSMutableArray array];
+        self.needDrawKLineModels = [NSMutableArray array];
         _needDrawStockStartIndex = 0;
         self.oldContentOffsetX = 0;
         self.oldScale = 0;
@@ -63,8 +66,8 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
     NSArray *kLineModels = [self private_convertToKLineModelWithStockModels:self.needDrawStockModels];
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextClearRect(context, rect);
-//    CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
-//    CGContextFillRect(context, self.bounds);
+    CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
+    CGContextFillRect(context, self.bounds);
     HYKLine *kLine = [[HYKLine alloc] initWithContext:context];
     kLine.solidLineWidth = self.kLineWidth;
     NSInteger idx = 0;
@@ -74,6 +77,7 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
         [kLine draw];
         idx++;
     }
+    [super drawRect:rect];
 }
 
 #pragma mark 重新设置相关变量，然后绘图
@@ -169,9 +173,9 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
     CGFloat minY = 0;
     CGFloat maxY = self.frame.size.height;
     CGFloat unitValue = (maxAssert - minAssert)/(maxY - minY);
-    
-    NSMutableArray *kLineModels = [NSMutableArray array];
 
+    [self.needDrawKLineModels removeAllObjects];
+    
     NSInteger stockModelsCount = stockModels.count;
     for (NSInteger idx = 0; idx < stockModelsCount; ++idx) {
         HYStockModel *stockModel = stockModels[idx];
@@ -206,9 +210,9 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
         CGPoint highPoint = CGPointMake(xPosition, ABS(maxY - (stockModel.high-minAssert)/unitValue));
         CGPoint lowPoint = CGPointMake(xPosition, ABS(maxY - (stockModel.low-minAssert)/unitValue));
         HYKLineModel *kLineModel = [HYKLineModel modelWithOpen:openPoint close:closePoint high:highPoint low:lowPoint];
-        [kLineModels addObject:kLineModel];
+        [self.needDrawKLineModels addObject:kLineModel];
     }
-    return kLineModels;
+    return self.needDrawKLineModels;
 }
 
 #pragma mark 更新自身view的宽度
@@ -230,8 +234,12 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(event_deviceOrientationDidChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     //用KVO监听scrollView的状态改变
     [_scrollView addObserver:self forKeyPath:kHYStockChartContentOffsetKey options:NSKeyValueObservingOptionNew context:nil];
+    //缩放手势
     UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(event_pinchMethod:)];
     [self addGestureRecognizer:pinchGesture];
+    //长按手势
+    UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(event_longPressMethod:)];
+    [self addGestureRecognizer:longPressGesture];
 }
 
 
@@ -268,6 +276,59 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
         //更新InnerView的宽度
         [self private_updateSelfWidth];
         [self drawInnerView];
+    }
+}
+
+#pragma mark 长按手势执行方法
+-(void)event_longPressMethod:(UILongPressGestureRecognizer *)longPress
+{
+    static UIView *verticalView = nil;
+    static CGFloat oldPositionX = 0;
+    if (UIGestureRecognizerStateChanged == longPress.state || UIGestureRecognizerStateBegan == longPress.state) {
+        CGPoint location = [longPress locationInView:self];
+        if (ABS(oldPositionX - location.x) < (self.kLineGap+self.kLineWidth)/2) {
+            return;
+        }
+        //让scrollView的scrollEnabled不可用
+        self.scrollView.scrollEnabled = NO;
+        oldPositionX = location.x;
+        //更改竖线的位置
+        if (!verticalView) {
+            verticalView = [UIView new];
+            [self addSubview:verticalView];
+            verticalView.backgroundColor = [UIColor blackColor];
+            [verticalView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self);
+                make.width.equalTo(@1);
+                make.height.equalTo(self.mas_height);
+                make.left.equalTo(@0);
+            }];
+        }
+        
+        NSInteger startIndex = (NSInteger)((location.x-self.startXPosition) / (self.kLineGap+self.kLineWidth));
+        NSInteger arrCount = self.needDrawKLineModels.count;
+        for (NSInteger index = startIndex > 0 ? startIndex-1 : 0; index < arrCount; ++index) {
+            HYKLineModel *kLineModel = self.needDrawKLineModels[index];
+            CGFloat minX = kLineModel.highPoint.x - (self.kLineWidth+self.kLineGap)/2;
+            CGFloat maxX = kLineModel.highPoint.x + (self.kLineWidth+self.kLineGap)/2;
+            if (location.x > minX && location.x < maxX) {
+                [verticalView mas_updateConstraints:^(MASConstraintMaker *make) {
+                    make.left.equalTo(@(kLineModel.highPoint.x));
+                }];
+                [verticalView layoutIfNeeded];
+                verticalView.hidden = NO;
+                return;
+            }
+        }
+    }
+    if (UIGestureRecognizerStateEnded == longPress.state) {
+        //取消竖线
+        if (verticalView) {
+            verticalView.hidden = YES;
+        }
+        oldPositionX = 0;
+        //让scrollView的scrollEnabled可用
+        self.scrollView.scrollEnabled = YES;
     }
 }
 
