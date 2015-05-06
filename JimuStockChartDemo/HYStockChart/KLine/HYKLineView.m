@@ -12,7 +12,7 @@
 #import "HYKLineInnerView.h"
 #import "HYStockModel.h"
 
-@interface HYKLineView ()<UIScrollViewDelegate>
+@interface HYKLineView ()<UIScrollViewDelegate,HYKLineInnerViewDelegate>
 
 @property(nonatomic,strong) UIView *timeView;
 
@@ -103,6 +103,7 @@
 {
     if (!_kLineInnerView) {
         _kLineInnerView = [HYKLineInnerView new];
+        _kLineInnerView.delegate = self;
         [self.scrollView addSubview:_kLineInnerView];
         WS(weakSelf);
         [_kLineInnerView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -140,22 +141,24 @@
     [self.kLineInnerView drawInnerView];
 }
 
-#pragma mark - UIScrollView的代理方法
-#pragma mark scrollViewDidScroll方法
--(void)scrollViewDidScroll:(UIScrollView *)scrollView
+#pragma mark - HYKLInnerView的代理方法
+#pragma mark 长按时选中的HYKLineModel模型
+-(void)kLineInnerViewLongPressKLineModel:(HYKLineModel *)kLineModel
 {
-//    NSLog(@"scrollViewDidScroll");
+    
 }
 
-#pragma mark 
--(void)scrollViewDidZoom:(UIScrollView *)scrollView
+#pragma mark HYKLInnerView的当前最大股价和最小股价
+-(void)kLineInnerViewCurrentMaxPrice:(CGFloat)maxPrice minPrice:(CGFloat)minPrice
 {
-    NSLog(@"scrollViewDidZoom");
+    
 }
 
-//-(UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
-//{
-//    return self.kLineInnerView;
-//}
+#pragma mark HYKInnerView的时间区间
+-(void)kLineInnerViewCurrentTimeZone:(NSArray *)timeZone
+{
+    
+}
+
 
 @end

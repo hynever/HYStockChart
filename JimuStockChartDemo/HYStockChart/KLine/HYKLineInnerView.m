@@ -151,6 +151,14 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
     }else{
         [self.needDrawStockModels addObjectsFromArray:[self.stockModels subarrayWithRange:NSMakeRange(needDrawKLineStartIndex, self.stockModels.count-needDrawKLineStartIndex)]];
     }
+    NSMutableArray *timeZone = [NSMutableArray array];
+    for (HYStockModel *stockModel in self.needDrawStockModels) {
+        [timeZone addObject:stockModel.date];
+    }
+    //执行代理
+    if (self.delegate && [self.delegate respondsToSelector:@selector(kLineInnerViewCurrentTimeZone:)]) {
+        [self.delegate kLineInnerViewCurrentTimeZone:timeZone];
+    }
     return self.needDrawStockModels;
 }
 

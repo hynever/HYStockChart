@@ -64,4 +64,9 @@
  */
 -(void)kLineInnerViewCurrentMaxPrice:(CGFloat)maxPrice minPrice:(CGFloat)minPrice;
 
+/**
+ *  当前InnerView的时间区间
+ */
+-(void)kLineInnerViewCurrentTimeZone:(NSArray *)timeZone;
+
 @end
