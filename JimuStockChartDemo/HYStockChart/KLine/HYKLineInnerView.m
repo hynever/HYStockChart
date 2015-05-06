@@ -181,7 +181,7 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
         
         CGFloat closePointY = ABS(maxY - (stockModel.close-minAssert)/unitValue);
         if (ABS(closePointY - openPoint.y) < 1) {
-            closePointY = openPoint.y > closePointY ? openPoint.y+1 : openPoint.y-1;
+            closePointY = openPoint.y >= closePointY ? openPoint.y+1 : openPoint.y-1;
         }
         CGPoint closePoint = CGPointMake(xPosition, closePointY);
         CGPoint highPoint = CGPointMake(xPosition, ABS(maxY - (stockModel.high-minAssert)/unitValue));
