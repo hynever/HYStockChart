@@ -73,17 +73,6 @@
     [super viewDidLayoutSubviews];
 }
 
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-//    NSMutableArray *models = [NSMutableArray array];
-//    for (NSInteger index = 0; index < 100; index++) {
-//        HYStockModel *model = [HYStockModel new];
-//        [models addObject:model];
-//    }
-//    self.kLineView.stockModels = models;
-}
-
 
 -(void)updateData
 {

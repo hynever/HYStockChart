@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>F895E8E3-1573-4B28-9ABD-E69FFD60F81A</string>
 	<key>IDESourceControlProjectName</key>
-	<string>JimuStockChartDemo</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>79BAD7331C76167B35085E0D88BA62E0CF6FF219</key>
 		<string>https://github.com/NunchakusHuang/HYStockChart.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>JimuStockChartDemo.xcodeproj</string>
+	<string>JimuStockChartDemo.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>79BAD7331C76167B35085E0D88BA62E0CF6FF219</key>

@@ -29,7 +29,7 @@ CGFloat const HYStockChartKLineTimeViewHeight = 20;
 /**
  *  K线最大的宽度
  */
-CGFloat const HYStockChartKLineMaxWidth = 20;
+CGFloat const HYStockChartKLineMaxWidth = 50;
 
 /**
  *  K线图最小的宽度

@@ -12,10 +12,12 @@
 #import "HYKLineModel.h"
 #import "HYKLine.h"
 #import "HYKeyValueObserver.h"
+#import "Masonry.h"
 
 static NSString * const kHYStockChartContentOffsetKey = @"contentOffset";
-static NSString * const kHYStockChartZoomScaleKey = @"zoomScale";
 
+static CGFloat const kHYStockChartScaleBound = 0.03;
+static CGFloat const kHYStockChartScaleFactor = 0.03;
 
 @interface HYKLineInnerView ()
 
@@ -26,6 +28,8 @@ static NSString * const kHYStockChartZoomScaleKey = @"zoomScale";
 @property(nonatomic,assign,readonly) CGFloat startXPosition;
 
 @property(nonatomic,assign) CGFloat oldContentOffsetX;
+
+@property(nonatomic,assign) CGFloat oldScale;
 
 @end
 
@@ -41,7 +45,9 @@ static NSString * const kHYStockChartZoomScaleKey = @"zoomScale";
         self.needDrawStockModels = [NSMutableArray array];
         _needDrawStockStartIndex = 0;
         self.oldContentOffsetX = 0;
+        self.oldScale = 0;
         self.backgroundColor = [UIColor whiteColor];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     }
     return self;
 }
@@ -115,6 +121,13 @@ static NSString * const kHYStockChartZoomScaleKey = @"zoomScale";
     return _needDrawStockStartIndex;
 }
 
+#pragma mark stockModels的set方法
+-(void)setStockModels:(NSArray *)stockModels
+{
+    _stockModels = stockModels;
+    [self private_updateSelfWidth];
+}
+
 
 #pragma mark - 私有方法
 #pragma mark 提取需要绘制的数组
@@ -160,7 +173,6 @@ static NSString * const kHYStockChartZoomScaleKey = @"zoomScale";
     
     NSMutableArray *kLineModels = [NSMutableArray array];
 
-#warning 这里暂时没有处理实体线和上下影线的宽度引起的问题
     NSInteger stockModelsCount = stockModels.count;
     for (NSInteger idx = 0; idx < stockModelsCount; ++idx) {
         HYStockModel *stockModel = stockModels[idx];
@@ -180,6 +192,19 @@ static NSString * const kHYStockChartZoomScaleKey = @"zoomScale";
     return kLineModels;
 }
 
+#pragma mark 更新自身view的宽度
+-(void)private_updateSelfWidth
+{
+    //根据stockModels个数和间隙以及K线的宽度算出self的宽度,设置contentSize
+    CGFloat kLineViewWidth = self.stockModels.count * self.kLineWidth + (self.stockModels.count + 1) * self.kLineGap+10;
+    [self mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@(kLineViewWidth));
+    }];
+    [self layoutIfNeeded];
+    //更新scrollView的contentSize
+    self.scrollView.contentSize = CGSizeMake(kLineViewWidth, self.scrollView.contentSize.height);
+}
+
 
 #pragma mark - 系统方法
 #pragma mark 已经添加到父view的方法
@@ -188,7 +213,8 @@ static NSString * const kHYStockChartZoomScaleKey = @"zoomScale";
     _scrollView = (UIScrollView *)self.superview;
     //用KVO监听scrollView的状态改变
     [_scrollView addObserver:self forKeyPath:kHYStockChartContentOffsetKey options:NSKeyValueObservingOptionNew context:nil];
-    [_scrollView addObserver:self forKeyPath:kHYStockChartZoomScaleKey options:NSKeyValueObservingOptionNew context:nil];
+    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchMethod:)];
+    [self addGestureRecognizer:pinchGesture];
     [super didMoveToSuperview];
 }
 
@@ -201,16 +227,38 @@ static NSString * const kHYStockChartZoomScaleKey = @"zoomScale";
             self.oldContentOffsetX = self.scrollView.contentOffset.x;
             [self drawInnerView];
         }
-    }else if ([keyPath isEqualToString:kHYStockChartZoomScaleKey]){
-        //根据缩放的因子设置K线的宽度
+    }
+}
+
+#pragma mart - 事件处理方法
+#pragma mark 缩放执行的方法
+-(void)pinchMethod:(UIPinchGestureRecognizer *)pinch
+{
+    static CGFloat oldScale = 1.0f;
+    CGFloat difValue = pinch.scale - oldScale;
+    if (ABS(difValue) > kHYStockChartScaleBound) {
+        self.kLineWidth = self.kLineWidth*(difValue>0?(1+kHYStockChartScaleFactor):(1-kHYStockChartScaleFactor));
+        oldScale = pinch.scale;
+        //更新InnerView的宽度
+        [self private_updateSelfWidth];
         [self drawInnerView];
     }
 }
 
+#pragma mark 屏幕旋转执行的方法
+-(void)deviceOrientationDidChanged:(NSNotification *)noti
+{
+    [self private_updateSelfWidth];
+    [self drawInnerView];
+}
+
+
+#pragma mark - 垃圾回收方法
+#pragma mark dealloc方法
 -(void)dealloc
 {
     [_scrollView removeObserver:self forKeyPath:kHYStockChartContentOffsetKey];
-    [_scrollView removeObserver:self forKeyPath:kHYStockChartZoomScaleKey];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

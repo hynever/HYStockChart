@@ -80,7 +80,7 @@
 {
     if (!_scrollView) {
         _scrollView = [UIScrollView new];
-        _scrollView.delegate = self;
+//        _scrollView.delegate = self;
         _scrollView.multipleTouchEnabled = YES;
         _scrollView.minimumZoomScale = 1.0;
         _scrollView.maximumZoomScale = 10.0;
@@ -127,26 +127,11 @@
         return [preStockModel.date compare:subStockModel.date];
     }];
     _stockModels = sortedStockModels;
-    //设置k线View的宽度
-    [self private_updateKLineViewWidth];
     //画图
     [self private_drawKLineInnerView];
 }
 
 #pragma mark - 私有方法
-#pragma mark 根据数据设置LineInnerView的宽度以及更新ScrolView的contentSize
--(void)private_updateKLineViewWidth
-{
-    //根据stockModels个数和间隙以及K线的宽度算出self的宽度,设置contentSize
-    CGFloat kLineViewWidth = self.stockModels.count * self.kLineInnerView.kLineWidth + (self.stockModels.count + 1) * HYStockChartKLineGap;
-    [_kLineInnerView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(@(kLineViewWidth));
-    }];
-    [self layoutIfNeeded];
-    //更新scrollView的contentSize
-    self.scrollView.contentSize = CGSizeMake(kLineViewWidth, self.scrollView.contentSize.height);
-}
-
 #pragma mark 画KLineInnerView
 -(void)private_drawKLineInnerView
 {
@@ -168,9 +153,9 @@
     NSLog(@"scrollViewDidZoom");
 }
 
--(UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
-{
-    return self.kLineInnerView;
-}
+//-(UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+//{
+//    return self.kLineInnerView;
+//}
 
 @end
