@@ -39,21 +39,13 @@
     
     CGContextRef context = self.context;
     
-//    CGPoint highPoint = self.kLineModel.highPoint;
-//    highPoint.x += 0;
-//    self.kLineModel.highPoint = highPoint;
-//    
-//    CGPoint lowPoint = self.kLineModel.lowPoint;
-//    lowPoint.x = highPoint.x;
-//    self.kLineModel.lowPoint = lowPoint;
-    
     //设置画笔颜色
     UIColor *strokeColor = nil;
-    //增长的
+    //减少的
     if (self.kLineModel.openPoint.y < self.kLineModel.closePoint.y) {
         strokeColor = [self decreaseColor];
     }
-    //减少的
+    //增长的
     else{
         strokeColor = [self increaseColor];
     }

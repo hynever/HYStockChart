@@ -47,7 +47,6 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
         self.oldContentOffsetX = 0;
         self.oldScale = 0;
         self.backgroundColor = [UIColor whiteColor];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     }
     return self;
 }
@@ -180,8 +179,28 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
         CGPoint openPoint = CGPointMake(xPosition, ABS(maxY - (stockModel.open-minAssert)/unitValue));
         
         CGFloat closePointY = ABS(maxY - (stockModel.close-minAssert)/unitValue);
-        if (ABS(closePointY - openPoint.y) < 1) {
-            closePointY = openPoint.y >= closePointY ? openPoint.y+1 : openPoint.y-1;
+        if (ABS(closePointY - openPoint.y) < HYStockChartKLineMinWidth) {
+            if (openPoint.y > closePointY) {
+                openPoint.y = closePointY+HYStockChartKLineMinWidth;
+            }else if (openPoint.y < closePointY){
+                closePointY = openPoint.y + HYStockChartKLineMinWidth;
+            }else{
+                if (idx > 0) {
+                    HYStockModel *preStockModel = stockModels[idx-1];
+                    if (stockModel.open > preStockModel.close) {
+                        openPoint.y = closePointY + HYStockChartKLineMinWidth;
+                    }else{
+                        closePointY = openPoint.y + HYStockChartKLineMinWidth;
+                    }
+                }else if(idx+1 < stockModelsCount){
+                    HYStockModel *subStockModel = stockModels[idx+1];
+                    if (stockModel.close < subStockModel.open) {
+                        openPoint.y = closePointY + HYStockChartKLineMinWidth;
+                    }else{
+                        closePointY = openPoint.y + HYStockChartKLineMinWidth;
+                    }
+                }
+            }
         }
         CGPoint closePoint = CGPointMake(xPosition, closePointY);
         CGPoint highPoint = CGPointMake(xPosition, ABS(maxY - (stockModel.high-minAssert)/unitValue));
@@ -205,16 +224,23 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
     self.scrollView.contentSize = CGSizeMake(kLineViewWidth, self.scrollView.contentSize.height);
 }
 
+#pragma mark 添加所有事件监听的方法
+-(void)private_addAllEventListenr
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(event_deviceOrientationDidChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    //用KVO监听scrollView的状态改变
+    [_scrollView addObserver:self forKeyPath:kHYStockChartContentOffsetKey options:NSKeyValueObservingOptionNew context:nil];
+    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(event_pinchMethod:)];
+    [self addGestureRecognizer:pinchGesture];
+}
+
 
 #pragma mark - 系统方法
 #pragma mark 已经添加到父view的方法
 -(void)didMoveToSuperview
 {
     _scrollView = (UIScrollView *)self.superview;
-    //用KVO监听scrollView的状态改变
-    [_scrollView addObserver:self forKeyPath:kHYStockChartContentOffsetKey options:NSKeyValueObservingOptionNew context:nil];
-    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchMethod:)];
-    [self addGestureRecognizer:pinchGesture];
+    [self private_addAllEventListenr];
     [super didMoveToSuperview];
 }
 
@@ -232,7 +258,7 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
 
 #pragma mart - 事件处理方法
 #pragma mark 缩放执行的方法
--(void)pinchMethod:(UIPinchGestureRecognizer *)pinch
+-(void)event_pinchMethod:(UIPinchGestureRecognizer *)pinch
 {
     static CGFloat oldScale = 1.0f;
     CGFloat difValue = pinch.scale - oldScale;
@@ -246,12 +272,11 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
 }
 
 #pragma mark 屏幕旋转执行的方法
--(void)deviceOrientationDidChanged:(NSNotification *)noti
+-(void)event_deviceOrientationDidChanged:(NSNotification *)noti
 {
     [self private_updateSelfWidth];
     [self drawInnerView];
 }
-
 
 #pragma mark - 垃圾回收方法
 #pragma mark dealloc方法
