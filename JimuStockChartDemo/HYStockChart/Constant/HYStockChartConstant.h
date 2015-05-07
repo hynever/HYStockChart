@@ -6,14 +6,9 @@
 //  Copyright (c) 2015年 jimubox. All rights reserved.
 //
 
-#ifndef __HYConstant__H__
-#define __HYConstant__H__
+#ifndef __HYStockChartConstant__H__
+#define __HYStockChartConstant__H__
 #import <UIKit/UIKit.h>
-
-/**
- *  K线的间隔，一般这个是不变的
- */
-extern CGFloat const HYStockChartKLineGap;
 
 /**
  *  K线图Price的View的宽度

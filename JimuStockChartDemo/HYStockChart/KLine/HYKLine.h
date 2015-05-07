@@ -19,11 +19,6 @@
 @property(nonatomic,strong) HYKLineModel *kLineModel;
 
 /**
- *  实线的宽度
- */
-@property(nonatomic,assign) CGFloat solidLineWidth;
-
-/**
  *  stockModel模型
  */
 @property(nonatomic,strong) HYStockModel *stockModel;

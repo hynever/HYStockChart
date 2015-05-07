@@ -7,7 +7,8 @@
 //
 
 #import "HYKLine.h"
-#import "HYConstant.h"
+#import "HYStockChartConstant.h"
+#import "HYStockChartGloablVariable.h"
 
 @interface HYKLine()
 
@@ -24,7 +25,6 @@
     self = [super init];
     if (self) {
         _context = context;
-        self.solidLineWidth = 5;
         self.isNeedDrawDate = NO;
     }
     return self;
@@ -55,7 +55,7 @@
     
     //画中间的开收盘线
     //设置开收盘线的宽度
-    CGContextSetLineWidth(context, self.solidLineWidth);
+    CGContextSetLineWidth(context, [HYStockChartGloablVariable kLineWidth]);
     //画实体线
     const CGPoint solidPoints[] = {self.kLineModel.openPoint,self.kLineModel.closePoint};
     CGContextStrokeLineSegments(context, solidPoints, 2);

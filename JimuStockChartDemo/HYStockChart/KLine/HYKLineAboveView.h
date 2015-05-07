@@ -20,16 +20,6 @@
 @property(nonatomic,strong) NSArray *stockModels;
 
 /**
- *  K线的宽度
- */
-@property(nonatomic,assign) CGFloat kLineWidth;
-
-/**
- *  K线之间的间隙
- */
-@property(nonatomic,assign) CGFloat kLineGap;
-
-/**
  *  父view，该父view为UIScrollView
  */
 @property(nonatomic,weak,readonly) UIScrollView *scrollView;
@@ -44,6 +34,16 @@
  *  画AboveView上的所有图
  */
 -(void)drawAboveView;
+
+/**
+ *  更新AboveView的宽度
+ */
+-(void)updateAboveViewWidth;
+
+/**
+ *  根据原始的x的位置获得精确的X的位置
+ */
+-(CGFloat)getRightXPositionWithOriginXPosition:(CGFloat)originXPosition;
 
 
 @end

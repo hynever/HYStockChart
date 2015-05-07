@@ -7,11 +7,12 @@
 //
 
 #import "HYKLineAboveView.h"
-#import "HYConstant.h"
+#import "HYStockChartConstant.h"
 #import "HYStockModel.h"
 #import "HYKLine.h"
 #import "HYKeyValueObserver.h"
 #import "Masonry.h"
+#import "HYStockChartGloablVariable.h"
 
 @interface HYKLineAboveView ()
 
@@ -36,9 +37,6 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        //默认的宽度
-        self.kLineWidth = 20;
-        self.kLineGap = HYStockChartKLineGap;
         self.needDrawStockModels = [NSMutableArray array];
         self.needDrawKLineModels = [NSMutableArray array];
         _needDrawStockStartIndex = 0;
@@ -61,8 +59,9 @@
     NSArray *kLineModels = [self private_convertToKLineModelWithStockModels:self.needDrawStockModels];
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextClearRect(context, rect);
+    CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
+    CGContextFillRect(context, rect);
     HYKLine *kLine = [[HYKLine alloc] initWithContext:context];
-    kLine.solidLineWidth = self.kLineWidth;
     kLine.maxY = HYStockChartAboveViewMaxY;
     NSInteger idx = 0;
     for (HYKLineModel *kLineModel in kLineModels) {
@@ -88,33 +87,21 @@
 }
 
 #pragma mark - set&get方法
-#pragma mark kLineWidth的set方法
--(void)setKLineWidth:(CGFloat)kLineWidth
-{
-    if (kLineWidth > HYStockChartKLineMaxWidth) {
-        kLineWidth = HYStockChartKLineMaxWidth;
-    }else if (kLineWidth < HYStockChartKLineMinWidth){
-        kLineWidth = HYStockChartKLineMinWidth;
-    }
-    _kLineWidth = kLineWidth;
-}
-
 #pragma mark startXPosition的get方法
 -(CGFloat)startXPosition
 {
-    CGFloat lineGap = self.kLineGap;
-    CGFloat lineWidth = self.kLineWidth;
+    CGFloat lineGap = [HYStockChartGloablVariable kLineGap];
+    CGFloat lineWidth = [HYStockChartGloablVariable kLineWidth];
     NSInteger leftArrCount = self.needDrawStockStartIndex;
     CGFloat startXPosition = (leftArrCount+1)*lineGap + leftArrCount*lineWidth+lineWidth/2;
-//    self.scrollView.contentOffset = CGPointMake(startXPosition, 0);
     return startXPosition;
 }
 
 #pragma mark needDrawStockStartIndex的get方法
 -(NSUInteger)needDrawStockStartIndex
 {
-    CGFloat lineGap = self.kLineGap;
-    CGFloat lineWidth = self.kLineWidth;
+    CGFloat lineGap = [HYStockChartGloablVariable kLineGap];
+    CGFloat lineWidth = [HYStockChartGloablVariable kLineWidth];
     CGFloat scrollViewOffsetX = self.scrollView.contentOffset.x < 0 ? 0 : self.scrollView.contentOffset.x;
     NSUInteger leftArrCount = ABS(scrollViewOffsetX - lineGap)/(lineWidth+lineGap);
     _needDrawStockStartIndex = leftArrCount;
@@ -125,7 +112,39 @@
 -(void)setStockModels:(NSArray *)stockModels
 {
     _stockModels = stockModels;
-    [self private_updateSelfWidth];
+    [self updateAboveViewWidth];
+}
+
+#pragma mark - 公有方法
+#pragma mark 更新自身view的宽度
+-(void)updateAboveViewWidth
+{
+    //根据stockModels个数和间隙以及K线的宽度算出self的宽度,设置contentSize
+    CGFloat kLineViewWidth = self.stockModels.count * [HYStockChartGloablVariable kLineWidth] + (self.stockModels.count + 1) * [HYStockChartGloablVariable kLineGap]+10;
+    [self mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@(kLineViewWidth));
+    }];
+    [self layoutIfNeeded];
+    //更新scrollView的contentSize
+    self.scrollView.contentSize = CGSizeMake(kLineViewWidth, self.scrollView.contentSize.height);
+}
+
+
+#pragma mark 根据原始的x的位置获得精确的X的位置
+-(CGFloat)getRightXPositionWithOriginXPosition:(CGFloat)originXPosition
+{
+    CGFloat xPositionInAboveView = originXPosition + self.scrollView.contentOffset.x - 10;
+    NSInteger startIndex = (NSInteger)((xPositionInAboveView-self.startXPosition) / ([HYStockChartGloablVariable kLineGap]+[HYStockChartGloablVariable kLineWidth]));
+    NSInteger arrCount = self.needDrawKLineModels.count;
+    for (NSInteger index = startIndex > 0 ? startIndex-1 : 0; index < arrCount; ++index) {
+        HYKLineModel *kLineModel = self.needDrawKLineModels[index];
+        CGFloat minX = kLineModel.highPoint.x - ([HYStockChartGloablVariable kLineGap]+[HYStockChartGloablVariable kLineWidth])/2;
+        CGFloat maxX = kLineModel.highPoint.x + ([HYStockChartGloablVariable kLineGap]+[HYStockChartGloablVariable kLineWidth])/2;
+        if (xPositionInAboveView > minX && xPositionInAboveView < maxX) {
+            return kLineModel.highPoint.x - self.scrollView.contentOffset.x+[HYStockChartGloablVariable kLineWidth]/2-[HYStockChartGloablVariable kLineGap];
+        }
+    }
+    return 0;
 }
 
 
@@ -133,8 +152,8 @@
 #pragma mark 提取需要绘制的数组
 -(NSArray *)private_extractNeedDrawModels
 {
-    CGFloat lineGap = self.kLineGap;
-    CGFloat lineWidth = self.kLineWidth;
+    CGFloat lineGap = [HYStockChartGloablVariable kLineGap];
+    CGFloat lineWidth = [HYStockChartGloablVariable kLineWidth];
     
     //数组个数
     CGFloat scrollViewWidth = self.scrollView.frame.size.width;
@@ -184,7 +203,7 @@
     NSInteger stockModelsCount = stockModels.count;
     for (NSInteger idx = 0; idx < stockModelsCount; ++idx) {
         HYStockModel *stockModel = stockModels[idx];
-        CGFloat xPosition = self.startXPosition + idx*(self.kLineWidth+self.kLineGap);
+        CGFloat xPosition = self.startXPosition + idx*([HYStockChartGloablVariable kLineWidth]+[HYStockChartGloablVariable kLineGap]);
         CGPoint openPoint = CGPointMake(xPosition, ABS(maxY - (stockModel.open-minAssert)/unitValue));
         
         CGFloat closePointY = ABS(maxY - (stockModel.close-minAssert)/unitValue);
@@ -226,31 +245,12 @@
     return self.needDrawKLineModels;
 }
 
-#pragma mark 更新自身view的宽度
--(void)private_updateSelfWidth
-{
-    //根据stockModels个数和间隙以及K线的宽度算出self的宽度,设置contentSize
-    CGFloat kLineViewWidth = self.stockModels.count * self.kLineWidth + (self.stockModels.count + 1) * self.kLineGap+10;
-    [self mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(@(kLineViewWidth));
-    }];
-    [self layoutIfNeeded];
-    //更新scrollView的contentSize
-    self.scrollView.contentSize = CGSizeMake(kLineViewWidth, self.scrollView.contentSize.height);
-}
-
 #pragma mark 添加所有事件监听的方法
 -(void)private_addAllEventListenr
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(event_deviceOrientationDidChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     //用KVO监听scrollView的状态改变
     [_scrollView addObserver:self forKeyPath:HYStockChartContentOffsetKey options:NSKeyValueObservingOptionNew context:nil];
-    //缩放手势
-    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(event_pinchMethod:)];
-    [self addGestureRecognizer:pinchGesture];
-    //长按手势
-    UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(event_longPressMethod:)];
-    [self addGestureRecognizer:longPressGesture];
 }
 
 
@@ -268,95 +268,17 @@
 {
     if ([keyPath isEqualToString:HYStockChartContentOffsetKey]) {
         CGFloat difValue = ABS(self.scrollView.contentOffset.x - self.oldContentOffsetX);
-        if (difValue >= (self.kLineGap+self.kLineWidth)) {
+        if (difValue >= ([HYStockChartGloablVariable kLineGap]+[HYStockChartGloablVariable kLineWidth])) {
             self.oldContentOffsetX = self.scrollView.contentOffset.x;
             [self drawAboveView];
         }
     }
 }
 
-#pragma mart - 事件处理方法
-#pragma mark 缩放执行的方法
--(void)event_pinchMethod:(UIPinchGestureRecognizer *)pinch
-{
-    static CGFloat oldScale = 1.0f;
-    CGFloat difValue = pinch.scale - oldScale;
-    if (ABS(difValue) > HYStockChartScaleBound) {
-        self.kLineWidth = self.kLineWidth*(difValue>0?(1+HYStockChartScaleFactor):(1-HYStockChartScaleFactor));
-        oldScale = pinch.scale;
-        //更新AboveView的宽度
-        [self private_updateSelfWidth];
-        [self drawAboveView];
-    }
-}
-
-#pragma mark 长按手势执行方法
--(void)event_longPressMethod:(UILongPressGestureRecognizer *)longPress
-{
-    static UIView *verticalView = nil;
-    static CGFloat oldPositionX = 0;
-    if (UIGestureRecognizerStateChanged == longPress.state || UIGestureRecognizerStateBegan == longPress.state) {
-        CGPoint location = [longPress locationInView:self];
-        if (ABS(oldPositionX - location.x) < (self.kLineGap+self.kLineWidth)/2) {
-            return;
-        }
-        //让scrollView的scrollEnabled不可用
-        self.scrollView.scrollEnabled = NO;
-        oldPositionX = location.x;
-        //初始化竖线
-        if (!verticalView) {
-            verticalView = [UIView new];
-            verticalView.clipsToBounds = YES;
-            [self addSubview:verticalView];
-            verticalView.backgroundColor = [UIColor blackColor];
-            [verticalView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self);
-                make.width.equalTo(@1);
-                make.height.equalTo(self.mas_height);
-                make.left.equalTo(@0);
-            }];
-        }
-        //更改竖线的位置
-        NSInteger startIndex = (NSInteger)((location.x-self.startXPosition) / (self.kLineGap+self.kLineWidth));
-        NSInteger arrCount = self.needDrawKLineModels.count;
-        for (NSInteger index = startIndex > 0 ? startIndex-1 : 0; index < arrCount; ++index) {
-            HYKLineModel *kLineModel = self.needDrawKLineModels[index];
-            CGFloat minX = kLineModel.highPoint.x - (self.kLineWidth+self.kLineGap)/2;
-            CGFloat maxX = kLineModel.highPoint.x + (self.kLineWidth+self.kLineGap)/2;
-            if (location.x > minX && location.x < maxX) {
-                [verticalView mas_updateConstraints:^(MASConstraintMaker *make) {
-                    make.left.equalTo(@(kLineModel.highPoint.x));
-                }];
-                [verticalView layoutIfNeeded];
-                verticalView.hidden = NO;
-                //执行代理方法
-                if (self.delegate) {
-                    if ([self.delegate respondsToSelector:@selector(kLineAboveViewLongPressKLineModel:)]) {
-                        [self.delegate kLineAboveViewLongPressKLineModel:kLineModel];
-                    }
-                    if ([self.delegate respondsToSelector:@selector(kLineAboveViewLongPressVerticalViewXPosition:)]) {
-                        [self.delegate kLineAboveViewLongPressVerticalViewXPosition:kLineModel.highPoint.x];
-                    }
-                }
-                return;
-            }
-        }
-    }
-    if (UIGestureRecognizerStateEnded == longPress.state) {
-        //取消竖线
-        if (verticalView) {
-            verticalView.hidden = YES;
-        }
-        oldPositionX = 0;
-        //让scrollView的scrollEnabled可用
-        self.scrollView.scrollEnabled = YES;
-    }
-}
-
 #pragma mark 屏幕旋转执行的方法
 -(void)event_deviceOrientationDidChanged:(NSNotification *)noti
 {
-    [self private_updateSelfWidth];
+    [self updateAboveViewWidth];
     [self drawAboveView];
 }
 

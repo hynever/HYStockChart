@@ -8,10 +8,11 @@
 
 #import "HYKLineView.h"
 #import "Masonry.h"
-#import "HYConstant.h"
+#import "HYStockChartConstant.h"
 #import "HYKLineAboveView.h"
 #import "HYStockModel.h"
 #import "HYKLineBelowView.h"
+#import "HYStockChartGloablVariable.h"
 
 @interface HYKLineView ()<UIScrollViewDelegate,HYKLineAboveViewDelegate>
 
@@ -34,6 +35,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        //默认的宽度
         self.needDrawStockModels = [NSMutableArray array];
         self.priceView.backgroundColor = [UIColor redColor];
         self.scrollView.backgroundColor = [UIColor whiteColor];
@@ -65,7 +67,15 @@
     if (!_scrollView) {
         _scrollView = [UIScrollView new];
         _scrollView.showsHorizontalScrollIndicator = YES;
+        _scrollView.minimumZoomScale = 1.0f;
+        _scrollView.maximumZoomScale = 1.0f;
         _scrollView.alwaysBounceHorizontal = YES;
+        //缩放手势
+        UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(event_pinchMethod:)];
+        [_scrollView addGestureRecognizer:pinchGesture];
+        //长按手势
+        UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(event_longPressMethod:)];
+        [_scrollView addGestureRecognizer:longPressGesture];
         [self addSubview:_scrollView];
         WS(weakSelf);
         [_scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -125,6 +135,68 @@
     _stockModels = sortedStockModels;
     //画图
     [self private_drawKLineAboveView];
+}
+
+#pragma mark - 事件处理方法
+#pragma mark 缩放处理方法
+#pragma mark 缩放执行的方法
+-(void)event_pinchMethod:(UIPinchGestureRecognizer *)pinch
+{
+    static CGFloat oldScale = 1.0f;
+    CGFloat difValue = pinch.scale - oldScale;
+    if (ABS(difValue) > HYStockChartScaleBound) {
+        CGFloat oldKLineWidth = [HYStockChartGloablVariable kLineWidth];
+        [HYStockChartGloablVariable setkLineWith:oldKLineWidth*(difValue>0?(1+HYStockChartScaleFactor):(1-HYStockChartScaleFactor))];
+        oldScale = pinch.scale;
+        //更新AboveView的宽度
+        [self.kLineAboveView updateAboveViewWidth];
+        [self.kLineAboveView drawAboveView];
+    }
+}
+
+#pragma mark 长按手势执行方法
+-(void)event_longPressMethod:(UILongPressGestureRecognizer *)longPress
+{
+    static UIView *verticalView = nil;
+    static CGFloat oldPositionX = 0;
+    if (UIGestureRecognizerStateChanged == longPress.state || UIGestureRecognizerStateBegan == longPress.state) {
+        CGPoint location = [longPress locationInView:self];
+        if (ABS(oldPositionX - location.x) < ([HYStockChartGloablVariable kLineWidth]+[HYStockChartGloablVariable kLineGap])/2) {
+            return;
+        }
+        //让scrollView的scrollEnabled不可用
+        self.scrollView.scrollEnabled = NO;
+        oldPositionX = location.x;
+        //初始化竖线
+        if (!verticalView) {
+            verticalView = [UIView new];
+            verticalView.clipsToBounds = YES;
+            [self addSubview:verticalView];
+            verticalView.backgroundColor = [UIColor blackColor];
+            [verticalView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self);
+                make.width.equalTo(@1);
+                make.height.equalTo(self.scrollView.mas_height);
+                make.left.equalTo(@0);
+            }];
+        }
+        //更改竖线的位置
+        CGFloat rightXPosition = [self.kLineAboveView getRightXPositionWithOriginXPosition:location.x];
+        [verticalView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(@(rightXPosition));
+        }];
+        [verticalView layoutIfNeeded];
+        verticalView.hidden = NO;
+    }
+    if (UIGestureRecognizerStateEnded == longPress.state) {
+        //取消竖线
+        if (verticalView) {
+            verticalView.hidden = YES;
+        }
+        oldPositionX = 0;
+        //让scrollView的scrollEnabled可用
+        self.scrollView.scrollEnabled = YES;
+    }
 }
 
 #pragma mark - 私有方法
