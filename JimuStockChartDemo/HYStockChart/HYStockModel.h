@@ -13,7 +13,7 @@
 
 @property(nonatomic,assign) CGFloat adjClose;
 
-@property(nonatomic,strong) NSDate *date;
+@property(nonatomic,copy) NSString *date;
 
 @property(nonatomic,assign) CGFloat high;
 

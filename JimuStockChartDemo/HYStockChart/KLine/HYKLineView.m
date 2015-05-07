@@ -9,18 +9,19 @@
 #import "HYKLineView.h"
 #import "Masonry.h"
 #import "HYConstant.h"
-#import "HYKLineInnerView.h"
+#import "HYKLineAboveView.h"
 #import "HYStockModel.h"
+#import "HYKLineBelowView.h"
 
-@interface HYKLineView ()<UIScrollViewDelegate,HYKLineInnerViewDelegate>
-
-@property(nonatomic,strong) UIView *timeView;
+@interface HYKLineView ()<UIScrollViewDelegate,HYKLineAboveViewDelegate>
 
 @property(nonatomic,strong) UIView *priceView;
 
 @property(nonatomic,strong) UIScrollView *scrollView;
 
-@property(nonatomic,strong) HYKLineInnerView *kLineInnerView;
+@property(nonatomic,strong) HYKLineAboveView *kLineAboveView;
+
+@property(nonatomic,strong) HYKLineBelowView *kLineBelowView;
 
 @property(nonatomic,strong) NSMutableArray *needDrawStockModels;
 
@@ -35,9 +36,9 @@
     if (self) {
         self.needDrawStockModels = [NSMutableArray array];
         self.priceView.backgroundColor = [UIColor redColor];
-        self.timeView.backgroundColor = [UIColor yellowColor];
         self.scrollView.backgroundColor = [UIColor whiteColor];
-//        self.kLineInnerView.backgroundColor = [UIColor whiteColor];
+        self.aboveViewRatio = 0.7;
+        self.kLineBelowView.backgroundColor = [UIColor yellowColor];
     }
     return self;
 }
@@ -58,32 +59,11 @@
     return _priceView;
 }
 
-#pragma mark XView的get方法
--(UIView *)timeView
-{
-    if (!_timeView) {
-        _timeView = [UIView new];
-        [self addSubview:_timeView];
-        WS(weakSelf);
-        [_timeView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(weakSelf.priceView.mas_right);
-            make.bottom.equalTo(weakSelf.mas_bottom);
-            make.height.equalTo(@(HYStockChartKLineTimeViewHeight));
-            make.right.equalTo(weakSelf.mas_right);
-        }];
-    }
-    return _timeView;
-}
-
 #pragma mark UIScrollView的get方法
 -(UIScrollView *)scrollView
 {
     if (!_scrollView) {
         _scrollView = [UIScrollView new];
-//        _scrollView.delegate = self;
-        _scrollView.multipleTouchEnabled = YES;
-        _scrollView.minimumZoomScale = 1.0;
-        _scrollView.maximumZoomScale = 10.0;
         _scrollView.showsHorizontalScrollIndicator = YES;
         _scrollView.alwaysBounceHorizontal = YES;
         [self addSubview:_scrollView];
@@ -92,27 +72,42 @@
             make.top.equalTo(weakSelf);
             make.left.equalTo(weakSelf.priceView.mas_right);
             make.right.equalTo(weakSelf.mas_right);
-            make.bottom.equalTo(weakSelf.timeView.mas_top);
+            make.bottom.equalTo(weakSelf.priceView.mas_bottom);
         }];
     }
     return _scrollView;
 }
 
-#pragma mark kLineInnerView的get方法
--(HYKLineInnerView *)kLineInnerView
+#pragma mark kLineAboveView的get方法
+-(HYKLineAboveView *)kLineAboveView
 {
-    if (!_kLineInnerView) {
-        _kLineInnerView = [HYKLineInnerView new];
-        _kLineInnerView.delegate = self;
-        [self.scrollView addSubview:_kLineInnerView];
-        WS(weakSelf);
-        [_kLineInnerView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.left.equalTo(weakSelf.scrollView);
-            make.height.equalTo(weakSelf.scrollView);
+    if (!_kLineAboveView) {
+        _kLineAboveView = [HYKLineAboveView new];
+        _kLineAboveView.delegate = self;
+        [self.scrollView addSubview:_kLineAboveView];
+        [_kLineAboveView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.left.equalTo(self.scrollView);
+            make.height.equalTo(self.scrollView.mas_height).multipliedBy(self.aboveViewRatio);
             make.width.equalTo(@0);
         }];
     }
-    return _kLineInnerView;
+    return _kLineAboveView;
+}
+
+#pragma mark kLineBelowView的get方法
+-(HYKLineBelowView *)kLineBelowView
+{
+    if (!_kLineBelowView) {
+        _kLineBelowView = [HYKLineBelowView new];
+        [self.scrollView addSubview:_kLineBelowView];
+        [_kLineBelowView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.kLineAboveView);
+            make.top.equalTo(self.kLineAboveView.mas_bottom);
+            make.width.equalTo(self.kLineAboveView.mas_width);
+            make.height.equalTo(self.scrollView.mas_height).multipliedBy((1-self.aboveViewRatio));
+        }];
+    }
+    return _kLineBelowView;
 }
 
 #pragma mark stockModels的设置方法
@@ -129,33 +124,34 @@
     }];
     _stockModels = sortedStockModels;
     //画图
-    [self private_drawKLineInnerView];
+    [self private_drawKLineAboveView];
 }
 
 #pragma mark - 私有方法
-#pragma mark 画KLineInnerView
--(void)private_drawKLineInnerView
+#pragma mark 画KLineAboveView
+-(void)private_drawKLineAboveView
 {
-    NSAssert(self.kLineInnerView != nil, @"画kLineInnerView之前，kLineInnerView不能为空");
-    self.kLineInnerView.stockModels = self.stockModels;
-    [self.kLineInnerView drawInnerView];
+    NSAssert(self.kLineAboveView != nil, @"画kLineAboveView之前，kLineAboveView不能为空");
+    self.kLineAboveView.stockModels = self.stockModels;
+    [self.kLineAboveView drawAboveView];
 }
 
-#pragma mark - HYKLInnerView的代理方法
+#pragma mark - HYKLAboveView的代理方法
 #pragma mark 长按时选中的HYKLineModel模型
--(void)kLineInnerViewLongPressKLineModel:(HYKLineModel *)kLineModel
+-(void)kLineAboveViewLongPressKLineModel:(HYKLineModel *)kLineModel
 {
     
 }
 
-#pragma mark HYKLInnerView的当前最大股价和最小股价
--(void)kLineInnerViewCurrentMaxPrice:(CGFloat)maxPrice minPrice:(CGFloat)minPrice
+#pragma mark HYKLAboveView的当前最大股价和最小股价
+-(void)kLineAboveViewCurrentMaxPrice:(CGFloat)maxPrice minPrice:(CGFloat)minPrice
 {
+    //更新价格坐标轴
     
 }
 
-#pragma mark HYKInnerView的时间区间
--(void)kLineInnerViewCurrentTimeZone:(NSArray *)timeZone
+#pragma mark HYKAboveView的时间区间
+-(void)kLineAboveViewCurrentTimeZone:(NSArray *)timeZone
 {
     
 }

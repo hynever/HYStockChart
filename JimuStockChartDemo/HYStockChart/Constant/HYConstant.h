@@ -35,5 +35,30 @@ extern CGFloat const HYStockChartKLineMaxWidth;
  */
 extern CGFloat const HYStockChartKLineMinWidth;
 
+/**
+ *  UIScrollView的contentOffset属性
+ */
+extern NSString * const HYStockChartContentOffsetKey;
+
+/**
+ *  K线图缩放界限
+ */
+extern CGFloat const HYStockChartScaleBound;
+
+/**
+ *  K线的缩放因子
+ */
+extern CGFloat const HYStockChartScaleFactor;
+
+/**
+ *  K线图上可画区域最小的Y
+ */
+#define HYStockChartAboveViewMinY 0
+
+/**
+ *  K线图上可画区域最大的Y
+ */
+#define HYStockChartAboveViewMaxY (self.frame.size.height-10)
+
 
 #endif

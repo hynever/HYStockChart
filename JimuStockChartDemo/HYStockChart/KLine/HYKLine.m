@@ -7,6 +7,7 @@
 //
 
 #import "HYKLine.h"
+#import "HYConstant.h"
 
 @interface HYKLine()
 
@@ -24,6 +25,7 @@
     if (self) {
         _context = context;
         self.solidLineWidth = 5;
+        self.isNeedDrawDate = NO;
     }
     return self;
 }
@@ -65,9 +67,17 @@
     const CGPoint shadowPoints[] = {self.kLineModel.highPoint,self.kLineModel.lowPoint};
     CGContextStrokeLineSegments(context, shadowPoints, 2);
     
-    NSString *highText = [NSString stringWithFormat:@"%.2f",self.stockModel.high];
-    CGPoint drawPoint = (CGPoint){self.kLineModel.highPoint.x-8,self.kLineModel.highPoint.y};
-    [highText drawAtPoint:drawPoint withAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:5],NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    if (self.isNeedDrawDate) {
+        NSString *dateStr = self.stockModel.date;
+        NSDateFormatter *formatter = [NSDateFormatter new];
+        formatter.dateFormat = @"yyyy-MM-dd";
+        NSDate *date = [formatter dateFromString:dateStr];
+        formatter.dateFormat = @"yyyyMM";
+        dateStr = [formatter stringFromDate:date];
+        CGSize dateSize = [dateStr sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:8]}];
+        [dateStr drawAtPoint:CGPointMake(self.kLineModel.highPoint.x-dateSize.width/2, self.maxY-2) withAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:[UIColor redColor]}];
+        self.isNeedDrawDate = NO;
+    }
 }
 
 /**

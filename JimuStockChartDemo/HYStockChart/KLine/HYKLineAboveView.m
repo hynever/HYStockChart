@@ -6,19 +6,14 @@
 //  Copyright (c) 2015年 jimubox. All rights reserved.
 //
 
-#import "HYKLineInnerView.h"
+#import "HYKLineAboveView.h"
 #import "HYConstant.h"
 #import "HYStockModel.h"
 #import "HYKLine.h"
 #import "HYKeyValueObserver.h"
 #import "Masonry.h"
 
-static NSString * const kHYStockChartContentOffsetKey = @"contentOffset";
-
-static CGFloat const kHYStockChartScaleBound = 0.03;
-static CGFloat const kHYStockChartScaleFactor = 0.03;
-
-@interface HYKLineInnerView ()
+@interface HYKLineAboveView ()
 
 @property(nonatomic,strong) NSMutableArray *needDrawStockModels;
 
@@ -32,9 +27,10 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
 
 @property(nonatomic,assign) CGFloat oldScale;
 
+
 @end
 
-@implementation HYKLineInnerView
+@implementation HYKLineAboveView
 
 -(instancetype)initWithFrame:(CGRect)frame
 {
@@ -65,14 +61,16 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
     NSArray *kLineModels = [self private_convertToKLineModelWithStockModels:self.needDrawStockModels];
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextClearRect(context, rect);
-    CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
-    CGContextFillRect(context, self.bounds);
     HYKLine *kLine = [[HYKLine alloc] initWithContext:context];
     kLine.solidLineWidth = self.kLineWidth;
+    kLine.maxY = HYStockChartAboveViewMaxY;
     NSInteger idx = 0;
     for (HYKLineModel *kLineModel in kLineModels) {
         kLine.kLineModel = kLineModel;
         kLine.stockModel = self.needDrawStockModels[idx];
+        if (idx%4 == 0) {
+            kLine.isNeedDrawDate = YES;
+        }
         [kLine draw];
         idx++;
     }
@@ -80,7 +78,7 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
 }
 
 #pragma mark 重新设置相关变量，然后绘图
--(void)drawInnerView
+-(void)drawAboveView
 {
     if (!self.stockModels) {
         return;
@@ -156,8 +154,8 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
         [timeZone addObject:stockModel.date];
     }
     //执行代理
-    if (self.delegate && [self.delegate respondsToSelector:@selector(kLineInnerViewCurrentTimeZone:)]) {
-        [self.delegate kLineInnerViewCurrentTimeZone:timeZone];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(kLineAboveViewCurrentTimeZone:)]) {
+        [self.delegate kLineAboveViewCurrentTimeZone:timeZone];
     }
     return self.needDrawStockModels;
 }
@@ -177,8 +175,8 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
             minAssert = stockModel.low;
         }
     }
-    CGFloat minY = 0;
-    CGFloat maxY = self.frame.size.height;
+    CGFloat minY = HYStockChartAboveViewMinY;
+    CGFloat maxY = HYStockChartAboveViewMaxY;
     CGFloat unitValue = (maxAssert - minAssert)/(maxY - minY);
 
     [self.needDrawKLineModels removeAllObjects];
@@ -221,8 +219,8 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
     }
     //执行代理方法
     if (self.delegate) {
-        if ([self.delegate respondsToSelector:@selector(kLineInnerViewCurrentMaxPrice:minPrice:)]) {
-            [self.delegate kLineInnerViewCurrentMaxPrice:maxAssert minPrice:minAssert];
+        if ([self.delegate respondsToSelector:@selector(kLineAboveViewCurrentMaxPrice:minPrice:)]) {
+            [self.delegate kLineAboveViewCurrentMaxPrice:maxAssert minPrice:minAssert];
         }
     }
     return self.needDrawKLineModels;
@@ -246,7 +244,7 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(event_deviceOrientationDidChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     //用KVO监听scrollView的状态改变
-    [_scrollView addObserver:self forKeyPath:kHYStockChartContentOffsetKey options:NSKeyValueObservingOptionNew context:nil];
+    [_scrollView addObserver:self forKeyPath:HYStockChartContentOffsetKey options:NSKeyValueObservingOptionNew context:nil];
     //缩放手势
     UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(event_pinchMethod:)];
     [self addGestureRecognizer:pinchGesture];
@@ -268,11 +266,11 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
 #pragma mark KVO监听实现的方法
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if ([keyPath isEqualToString:kHYStockChartContentOffsetKey]) {
+    if ([keyPath isEqualToString:HYStockChartContentOffsetKey]) {
         CGFloat difValue = ABS(self.scrollView.contentOffset.x - self.oldContentOffsetX);
         if (difValue >= (self.kLineGap+self.kLineWidth)) {
             self.oldContentOffsetX = self.scrollView.contentOffset.x;
-            [self drawInnerView];
+            [self drawAboveView];
         }
     }
 }
@@ -283,12 +281,12 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
 {
     static CGFloat oldScale = 1.0f;
     CGFloat difValue = pinch.scale - oldScale;
-    if (ABS(difValue) > kHYStockChartScaleBound) {
-        self.kLineWidth = self.kLineWidth*(difValue>0?(1+kHYStockChartScaleFactor):(1-kHYStockChartScaleFactor));
+    if (ABS(difValue) > HYStockChartScaleBound) {
+        self.kLineWidth = self.kLineWidth*(difValue>0?(1+HYStockChartScaleFactor):(1-HYStockChartScaleFactor));
         oldScale = pinch.scale;
-        //更新InnerView的宽度
+        //更新AboveView的宽度
         [self private_updateSelfWidth];
-        [self drawInnerView];
+        [self drawAboveView];
     }
 }
 
@@ -305,9 +303,10 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
         //让scrollView的scrollEnabled不可用
         self.scrollView.scrollEnabled = NO;
         oldPositionX = location.x;
-        //更改竖线的位置
+        //初始化竖线
         if (!verticalView) {
             verticalView = [UIView new];
+            verticalView.clipsToBounds = YES;
             [self addSubview:verticalView];
             verticalView.backgroundColor = [UIColor blackColor];
             [verticalView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -317,7 +316,7 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
                 make.left.equalTo(@0);
             }];
         }
-        
+        //更改竖线的位置
         NSInteger startIndex = (NSInteger)((location.x-self.startXPosition) / (self.kLineGap+self.kLineWidth));
         NSInteger arrCount = self.needDrawKLineModels.count;
         for (NSInteger index = startIndex > 0 ? startIndex-1 : 0; index < arrCount; ++index) {
@@ -332,8 +331,11 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
                 verticalView.hidden = NO;
                 //执行代理方法
                 if (self.delegate) {
-                    if ([self.delegate respondsToSelector:@selector(kLineInnerViewLongPressKLineModel:)]) {
-                        [self.delegate kLineInnerViewLongPressKLineModel:kLineModel];
+                    if ([self.delegate respondsToSelector:@selector(kLineAboveViewLongPressKLineModel:)]) {
+                        [self.delegate kLineAboveViewLongPressKLineModel:kLineModel];
+                    }
+                    if ([self.delegate respondsToSelector:@selector(kLineAboveViewLongPressVerticalViewXPosition:)]) {
+                        [self.delegate kLineAboveViewLongPressVerticalViewXPosition:kLineModel.highPoint.x];
                     }
                 }
                 return;
@@ -355,14 +357,14 @@ static CGFloat const kHYStockChartScaleFactor = 0.03;
 -(void)event_deviceOrientationDidChanged:(NSNotification *)noti
 {
     [self private_updateSelfWidth];
-    [self drawInnerView];
+    [self drawAboveView];
 }
 
 #pragma mark - 垃圾回收方法
 #pragma mark dealloc方法
 -(void)dealloc
 {
-    [_scrollView removeObserver:self forKeyPath:kHYStockChartContentOffsetKey];
+    [_scrollView removeObserver:self forKeyPath:HYStockChartContentOffsetKey];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 

@@ -14,4 +14,9 @@
 
 @property(nonatomic,strong) NSArray *stockModels;
 
+/**
+ *  上面那个view所占的比例
+ */
+@property(nonatomic,assign) CGFloat aboveViewRatio;
+
 @end

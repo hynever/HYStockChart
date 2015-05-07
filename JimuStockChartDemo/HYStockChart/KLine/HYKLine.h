@@ -23,7 +23,20 @@
  */
 @property(nonatomic,assign) CGFloat solidLineWidth;
 
+/**
+ *  stockModel模型
+ */
 @property(nonatomic,strong) HYStockModel *stockModel;
+
+/**
+ *  最大的Y
+ */
+@property(nonatomic,assign) CGFloat maxY;
+
+/**
+ *  是否需要画时间
+ */
+@property(nonatomic,assign) BOOL isNeedDrawDate;
 
 /**
  *  根据context初始化
