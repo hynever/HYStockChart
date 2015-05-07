@@ -10,7 +10,7 @@
 #import "Masonry.h"
 #import "HYStockChartConstant.h"
 #import "HYKLineAboveView.h"
-#import "HYStockModel.h"
+#import "HYKLineModel.h"
 #import "HYKLineBelowView.h"
 #import "HYStockChartGloablVariable.h"
 
@@ -121,18 +121,18 @@
 }
 
 #pragma mark stockModels的设置方法
--(void)setStockModels:(NSArray *)stockModels
+-(void)setKLineModels:(NSArray *)kLineModels
 {
-    if (!stockModels) {
+    if (!kLineModels) {
         return;
     }
     //根据时间进行排序
-    NSArray *sortedStockModels = [stockModels sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        HYStockModel *preStockModel = (HYStockModel *)obj1;
-        HYStockModel *subStockModel = (HYStockModel *)obj2;
-        return [preStockModel.date compare:subStockModel.date];
+    NSArray *sortedKLineModels = [kLineModels sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        HYKLineModel *preKLineModel = (HYKLineModel *)obj1;
+        HYKLineModel *subKLineModel = (HYKLineModel *)obj2;
+        return [preKLineModel.date compare:subKLineModel.date];
     }];
-    _stockModels = sortedStockModels;
+    _kLineModels = sortedKLineModels;
     //画图
     [self private_drawKLineAboveView];
 }
@@ -216,13 +216,13 @@
 -(void)private_drawKLineAboveView
 {
     NSAssert(self.kLineAboveView != nil, @"画kLineAboveView之前，kLineAboveView不能为空");
-    self.kLineAboveView.stockModels = self.stockModels;
+    self.kLineAboveView.kLineModels = self.kLineModels;
     [self.kLineAboveView drawAboveView];
 }
 
 #pragma mark - HYKLAboveView的代理方法
-#pragma mark 长按时选中的HYKLineModel模型
--(void)kLineAboveViewLongPressKLineModel:(HYKLineModel *)kLineModel
+#pragma mark 长按时选中的HYKLinePositionModel模型
+-(void)kLineAboveViewLongPressKLineModel:(HYKLinePositionModel *)kLineModel
 {
     
 }

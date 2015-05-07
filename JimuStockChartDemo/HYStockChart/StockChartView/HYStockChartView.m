@@ -9,7 +9,7 @@
 
 #import "HYStockChartView.h"
 #import "HYKLine.h"
-#import "HYStockModel.h"
+#import "HYKLineModel.h"
 
 @implementation HYStockChartView
 
@@ -26,11 +26,11 @@
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
     HYKLine *kLine1 = [[HYKLine alloc] initWithContext:context];
-    kLine1.kLineModel = [HYKLineModel modelWithOpen:CGPointMake(10, 10) close:CGPointMake(10, 5) high:CGPointMake(10, 2) low:CGPointMake(10, 20)];
+    kLine1.kLineModel = [HYKLinePositionModel modelWithOpen:CGPointMake(10, 10) close:CGPointMake(10, 5) high:CGPointMake(10, 2) low:CGPointMake(10, 20)];
     [kLine1 draw];
     
     HYKLine *kLine2 = [[HYKLine alloc] initWithContext:context];
-    kLine2.kLineModel = [HYKLineModel modelWithOpen:CGPointMake(20, 10) close:CGPointMake(20, 20) high:CGPointMake(20, 2) low:CGPointMake(20, 20)];
+    kLine2.kLineModel = [HYKLinePositionModel modelWithOpen:CGPointMake(20, 10) close:CGPointMake(20, 20) high:CGPointMake(20, 2) low:CGPointMake(20, 20)];
     [kLine2 draw];
 }
 
@@ -52,7 +52,7 @@
 #pragma mark - 私有方法
 -(NSArray *)private_parseToCoordinateWithStockData:(NSArray *)stockData
 {
-    for (HYStockModel *stockModel in stockData) {
+    for (HYKLineModel *stockModel in stockData) {
         
     }
     return nil;

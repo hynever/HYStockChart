@@ -12,7 +12,7 @@
 /************************展示K线图和数据更新的View************************/
 @interface HYKLineView : UIView
 
-@property(nonatomic,strong) NSArray *stockModels;
+@property(nonatomic,strong) NSArray *kLineModels;
 
 /**
  *  上面那个view所占的比例

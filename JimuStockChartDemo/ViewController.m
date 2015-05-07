@@ -7,12 +7,12 @@
 //
 
 #import "ViewController.h"
-#import "HYStockChart.h"
 #import "Masonry.h"
 #import "CHCSVParser.h"
-#import "HYStockModel.h"
+#import "HYKLineModel.h"
 #import "MJExtension.h"
 #import "HYKLineView.h"
+#import "HYStockChart.h"
 
 
 @interface ViewController ()
@@ -76,10 +76,14 @@
 
 -(void)updateData
 {
-    NSURL *URL = [[NSBundle mainBundle] URLForResource:@"stock.csv" withExtension:nil];
-    NSArray *arr = [NSArray arrayWithContentsOfCSVURL:URL options:CHCSVParserOptionsUsesFirstLineAsKeys];
-    NSArray *modelArr = [HYStockModel objectArrayWithKeyValuesArray:arr];
-    self.kLineView.stockModels = modelArr;
+//    NSURL *URL = [[NSBundle mainBundle] URLForResource:@"stock.csv" withExtension:nil];
+//    NSArray *arr = [NSArray arrayWithContentsOfCSVURL:URL options:CHCSVParserOptionsUsesFirstLineAsKeys];
+//    NSArray *modelArr = [HYKLineModel objectArrayWithKeyValuesArray:arr];
+//    self.kLineView.kLineModels = modelArr;
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"KLine" ofType:@"plist"];
+    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    NSArray *kLineModelArr = [HYKLineModel objectArrayWithKeyValuesArray:dict[@"GlobalQuotes"]];
+    self.kLineView.kLineModels = kLineModelArr;
 }
 
 - (void)didReceiveMemoryWarning {

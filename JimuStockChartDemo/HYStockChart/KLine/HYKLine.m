@@ -35,7 +35,7 @@
 -(void)draw
 {
     //如果没有数据，直接返回
-    if (!self.kLineModel || !self.context || !self.stockModel) {
+    if (!self.kLineModel || !self.context || !self.kLineModel) {
         return;
     }
     
@@ -44,7 +44,7 @@
     //设置画笔颜色
     UIColor *strokeColor = nil;
     //减少的
-    if (self.kLineModel.openPoint.y < self.kLineModel.closePoint.y) {
+    if (self.kLinePositionModel.openPoint.y < self.kLinePositionModel.closePoint.y) {
         strokeColor = [self decreaseColor];
     }
     //增长的
@@ -57,25 +57,25 @@
     //设置开收盘线的宽度
     CGContextSetLineWidth(context, [HYStockChartGloablVariable kLineWidth]);
     //画实体线
-    const CGPoint solidPoints[] = {self.kLineModel.openPoint,self.kLineModel.closePoint};
+    const CGPoint solidPoints[] = {self.kLinePositionModel.openPoint,self.kLinePositionModel.closePoint};
     CGContextStrokeLineSegments(context, solidPoints, 2);
     
     //画上影线和下影线
     //设置上影线和下影线的线的宽度
     CGContextSetLineWidth(context, [self shadowLineWidth]);
     //画出上下影线
-    const CGPoint shadowPoints[] = {self.kLineModel.highPoint,self.kLineModel.lowPoint};
+    const CGPoint shadowPoints[] = {self.kLinePositionModel.highPoint,self.kLinePositionModel.lowPoint};
     CGContextStrokeLineSegments(context, shadowPoints, 2);
     
     if (self.isNeedDrawDate) {
-        NSString *dateStr = self.stockModel.date;
+        NSString *dateStr = self.kLineModel.date;
         NSDateFormatter *formatter = [NSDateFormatter new];
         formatter.dateFormat = @"yyyy-MM-dd";
         NSDate *date = [formatter dateFromString:dateStr];
         formatter.dateFormat = @"yyyyMM";
         dateStr = [formatter stringFromDate:date];
         CGSize dateSize = [dateStr sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:8]}];
-        [dateStr drawAtPoint:CGPointMake(self.kLineModel.highPoint.x-dateSize.width/2, self.maxY-2) withAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:[UIColor redColor]}];
+        [dateStr drawAtPoint:CGPointMake(self.kLinePositionModel.highPoint.x-dateSize.width/2, self.maxY-2) withAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:[UIColor redColor]}];
         self.isNeedDrawDate = NO;
     }
 }

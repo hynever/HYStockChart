@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "HYKLineModel.h"
+#import "HYKLinePositionModel.h"
 
 @protocol HYKLineAboveViewDelegate;
 
@@ -17,7 +17,7 @@
 /**
  *  股票模型数组
  */
-@property(nonatomic,strong) NSArray *stockModels;
+@property(nonatomic,strong) NSArray *kLineModels;
 
 /**
  *  父view，该父view为UIScrollView
@@ -55,9 +55,9 @@
 
 @optional
 /**
- *  长按后展示手指按着的HYKLineModel
+ *  长按后展示手指按着的HYKLinePositionModel
  */
--(void)kLineAboveViewLongPressKLineModel:(HYKLineModel *)kLineModel;
+-(void)kLineAboveViewLongPressKLineModel:(HYKLinePositionModel *)kLineModel;
 
 /**
  *  当前AboveView中的最大股价和最小股价
@@ -67,6 +67,6 @@
 /**
  *  需要展示的kLineModel的模型数组
  */
--(void)kLineAboveViewNeedDrawKLineModels:(NSArray *)kLineModels;
+-(void)kLineAboveViewNeedDrawKLinePositionModels:(NSArray *)kLineModels;
 
 @end

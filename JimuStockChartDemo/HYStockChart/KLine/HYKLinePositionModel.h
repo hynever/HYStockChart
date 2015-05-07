@@ -1,5 +1,5 @@
 //
-//  HYKLineModel.h
+//  HYKLinePositionModel.h
 //  JimuStockChartDemo
 //
 //  Created by jimubox on 15/5/4.
@@ -11,7 +11,7 @@
 
 
 /************************K线数据模型************************/
-@interface HYKLineModel : NSObject
+@interface HYKLinePositionModel : NSObject
 
 /**
  *  开盘点

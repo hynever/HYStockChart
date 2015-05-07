@@ -1,5 +1,5 @@
 //
-//  HYStockModel.h
+//  HYKLineModel.h
 //  JimuStockChartDemo
 //
 //  Created by jimubox on 15/5/4.
@@ -9,9 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
 
-@interface HYStockModel : NSObject
-
-@property(nonatomic,assign) CGFloat adjClose;
+@interface HYKLineModel : NSObject
 
 @property(nonatomic,copy) NSString *date;
 

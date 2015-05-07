@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 #import "HYKLineView.h"
-#import "HYStockModel.h"
+#import "HYKLineModel.h"
 
 
 @interface JimuStockChartDemoTests : XCTestCase
@@ -31,11 +31,11 @@
 - (void)testExample {
     NSMutableArray *models = [NSMutableArray array];
     for (NSInteger index = 0; index < 100; index++) {
-        HYStockModel *model = [HYStockModel new];
+        HYKLineModel *model = [HYKLineModel new];
         [models addObject:model];
     }
     HYKLineView *kLineView = [[HYKLineView alloc] initWithFrame:CGRectMake(0, 0, 320, 568)];
-    kLineView.stockModels = models;
+    kLineView.kLineModels = models;
 }
 
 - (void)testPerformanceExample {

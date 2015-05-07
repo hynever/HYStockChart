@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HYKLinePositionModel.h"
 #import "HYKLineModel.h"
-#import "HYStockModel.h"
 
 /************************K线************************/
 @interface HYKLine : NSObject
@@ -16,12 +16,12 @@
 /**
  *  K线模型
  */
-@property(nonatomic,strong) HYKLineModel *kLineModel;
+@property(nonatomic,strong) HYKLinePositionModel *kLinePositionModel;
 
 /**
  *  stockModel模型
  */
-@property(nonatomic,strong) HYStockModel *stockModel;
+@property(nonatomic,strong) HYKLineModel *kLineModel;
 
 /**
  *  最大的Y

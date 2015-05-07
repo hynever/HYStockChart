@@ -1,19 +1,19 @@
 //
-//  HYKLineModel.m
+//  HYKLinePositionModel.m
 //  JimuStockChartDemo
 //
 //  Created by jimubox on 15/5/4.
 //  Copyright (c) 2015年 jimubox. All rights reserved.
 //
 
-#import "HYKLineModel.h"
+#import "HYKLinePositionModel.h"
 
-@implementation HYKLineModel
+@implementation HYKLinePositionModel
 
 #pragma mark 用属性创建一个模型
 +(instancetype)modelWithOpen:(CGPoint)openPoint close:(CGPoint)closePoint high:(CGPoint)highPoint low:(CGPoint)lowPoint
 {
-    HYKLineModel *model = [HYKLineModel new];
+    HYKLinePositionModel *model = [HYKLinePositionModel new];
     model.openPoint = openPoint;
     model.closePoint = closePoint;
     model.highPoint = highPoint;
