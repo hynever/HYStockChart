@@ -41,6 +41,7 @@
         self.scrollView.backgroundColor = [UIColor whiteColor];
         self.aboveViewRatio = 0.7;
         self.kLineBelowView.backgroundColor = [UIColor yellowColor];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(event_deviceOrientationDidChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     }
     return self;
 }
@@ -51,11 +52,10 @@
 {
     _priceView = [UIView new];
     [self addSubview:_priceView];
-    WS(weakSelf);
     [_priceView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(weakSelf);
-        make.left.equalTo(weakSelf.mas_left);
-        make.height.equalTo(weakSelf.mas_height);
+        make.top.equalTo(self);
+        make.left.equalTo(self.mas_left);
+        make.height.equalTo(self.mas_height);
         make.width.equalTo(@(HYStockChartKLinePriceViewWidth));
     }];
     return _priceView;
@@ -138,7 +138,6 @@
 }
 
 #pragma mark - 事件处理方法
-#pragma mark 缩放处理方法
 #pragma mark 缩放执行的方法
 -(void)event_pinchMethod:(UIPinchGestureRecognizer *)pinch
 {
@@ -199,6 +198,19 @@
     }
 }
 
+#pragma mark 屏幕旋转执行的方法
+-(void)event_deviceOrientationDidChanged:(NSNotification *)noti
+{
+    //更新AboveView
+    if (self.kLineAboveView) {
+        [self.kLineAboveView updateAboveViewWidth];
+        [self.kLineAboveView drawAboveView];
+    }
+    //更新BelowView
+#warning 还没有写
+}
+
+
 #pragma mark - 私有方法
 #pragma mark 画KLineAboveView
 -(void)private_drawKLineAboveView
@@ -222,8 +234,8 @@
     
 }
 
-#pragma mark HYKAboveView的时间区间
--(void)kLineAboveViewCurrentTimeZone:(NSArray *)timeZone
+#pragma mark 需要展示的kLineModel的模型数组
+-(void)kLineAboveViewNeedDrawKLineModels:(NSArray *)kLineModels
 {
     
 }

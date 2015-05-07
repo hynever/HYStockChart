@@ -60,18 +60,13 @@
 -(void)kLineAboveViewLongPressKLineModel:(HYKLineModel *)kLineModel;
 
 /**
- *  长按后竖线的位置
- */
--(void)kLineAboveViewLongPressVerticalViewXPosition:(CGFloat)verticalViewXPosition;
-
-/**
  *  当前AboveView中的最大股价和最小股价
  */
 -(void)kLineAboveViewCurrentMaxPrice:(CGFloat)maxPrice minPrice:(CGFloat)minPrice;
 
 /**
- *  当前AboveView的时间区间
+ *  需要展示的kLineModel的模型数组
  */
--(void)kLineAboveViewCurrentTimeZone:(NSArray *)timeZone;
+-(void)kLineAboveViewNeedDrawKLineModels:(NSArray *)kLineModels;
 
 @end

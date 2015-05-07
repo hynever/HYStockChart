@@ -141,6 +141,9 @@
         CGFloat minX = kLineModel.highPoint.x - ([HYStockChartGloablVariable kLineGap]+[HYStockChartGloablVariable kLineWidth])/2;
         CGFloat maxX = kLineModel.highPoint.x + ([HYStockChartGloablVariable kLineGap]+[HYStockChartGloablVariable kLineWidth])/2;
         if (xPositionInAboveView > minX && xPositionInAboveView < maxX) {
+            if (self.delegate && [self.delegate respondsToSelector:@selector(kLineAboveViewLongPressKLineModel:)]) {
+                [self.delegate kLineAboveViewLongPressKLineModel:self.needDrawStockModels[index]];
+            }
             return kLineModel.highPoint.x - self.scrollView.contentOffset.x+[HYStockChartGloablVariable kLineWidth]/2-[HYStockChartGloablVariable kLineGap];
         }
     }
@@ -167,14 +170,6 @@
         [self.needDrawStockModels addObjectsFromArray:[self.stockModels subarrayWithRange:NSMakeRange(needDrawKLineStartIndex, needDrawKLineCount)]];
     }else{
         [self.needDrawStockModels addObjectsFromArray:[self.stockModels subarrayWithRange:NSMakeRange(needDrawKLineStartIndex, self.stockModels.count-needDrawKLineStartIndex)]];
-    }
-    NSMutableArray *timeZone = [NSMutableArray array];
-    for (HYStockModel *stockModel in self.needDrawStockModels) {
-        [timeZone addObject:stockModel.date];
-    }
-    //执行代理
-    if (self.delegate && [self.delegate respondsToSelector:@selector(kLineAboveViewCurrentTimeZone:)]) {
-        [self.delegate kLineAboveViewCurrentTimeZone:timeZone];
     }
     return self.needDrawStockModels;
 }
@@ -241,6 +236,9 @@
         if ([self.delegate respondsToSelector:@selector(kLineAboveViewCurrentMaxPrice:minPrice:)]) {
             [self.delegate kLineAboveViewCurrentMaxPrice:maxAssert minPrice:minAssert];
         }
+        if ([self.delegate respondsToSelector:@selector(kLineAboveViewNeedDrawKLineModels:)]) {
+            [self.delegate kLineAboveViewNeedDrawKLineModels:self.needDrawKLineModels];
+        }
     }
     return self.needDrawKLineModels;
 }
@@ -248,7 +246,6 @@
 #pragma mark 添加所有事件监听的方法
 -(void)private_addAllEventListenr
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(event_deviceOrientationDidChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     //用KVO监听scrollView的状态改变
     [_scrollView addObserver:self forKeyPath:HYStockChartContentOffsetKey options:NSKeyValueObservingOptionNew context:nil];
 }
@@ -273,13 +270,6 @@
             [self drawAboveView];
         }
     }
-}
-
-#pragma mark 屏幕旋转执行的方法
--(void)event_deviceOrientationDidChanged:(NSNotification *)noti
-{
-    [self updateAboveViewWidth];
-    [self drawAboveView];
 }
 
 #pragma mark - 垃圾回收方法
