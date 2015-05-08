@@ -53,14 +53,6 @@
     }];
 }
 
-
-#pragma mark - get&set方法
-#pragma mark needDrawKLineModels的set方法
--(void)setNeedDrawKLineModels:(NSArray *)needDrawKLineModels
-{
-    _needDrawKLineModels = needDrawKLineModels;
-}
-
 #pragma mark - 公有方法
 #pragma mark 绘制BelowView方法
 -(void)drawBelowView

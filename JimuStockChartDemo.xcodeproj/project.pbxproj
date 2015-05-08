@@ -10,7 +10,6 @@
 		FB4AC6E31AF8F4170005707E /* HYKeyValueObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4AC6E21AF8F4170005707E /* HYKeyValueObserver.m */; };
 		FB65201E1AFB4C52004AC694 /* HYStockChartGloablVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = FB65201D1AFB4C52004AC694 /* HYStockChartGloablVariable.m */; };
 		FB6520341AFB8973004AC694 /* KLine.plist in Resources */ = {isa = PBXBuildFile; fileRef = FB6520331AFB8973004AC694 /* KLine.plist */; };
-		FB65203A1AFB8D80004AC694 /* JMSKLineGroupModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FB6520371AFB8D80004AC694 /* JMSKLineGroupModel.m */; };
 		FB70639A1AFC6BB4004484A7 /* HYKLine.m in Sources */ = {isa = PBXBuildFile; fileRef = FB70638A1AFC6BB4004484A7 /* HYKLine.m */; };
 		FB70639B1AFC6BB4004484A7 /* HYKLineAboveView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB70638C1AFC6BB4004484A7 /* HYKLineAboveView.m */; };
 		FB70639C1AFC6BB4004484A7 /* HYKLinePositionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FB70638E1AFC6BB4004484A7 /* HYKLinePositionModel.m */; };
@@ -47,6 +46,14 @@
 		FB76B7FC1AF76CE800FDE90B /* NSObject+MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = FB76B7F31AF76CE800FDE90B /* NSObject+MJProperty.m */; };
 		FB76B7FD1AF76CE800FDE90B /* NSString+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = FB76B7F51AF76CE800FDE90B /* NSString+MJExtension.m */; };
 		FB883DF41AF7BA2100E634EF /* HYStockChartConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = FB883DF31AF7BA2100E634EF /* HYStockChartConstant.m */; };
+		FBADB5C11AFCC67F0067955A /* TimeLine.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBADB5C01AFCC67F0067955A /* TimeLine.plist */; };
+		FBADB5C51AFCC89E0067955A /* HYTimeLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBADB5C41AFCC89E0067955A /* HYTimeLineView.m */; };
+		FBADB5CA1AFCC8EF0067955A /* HYTimeLineAboveView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBADB5C91AFCC8EF0067955A /* HYTimeLineAboveView.m */; };
+		FBADB5CD1AFCC8F90067955A /* HYTimeLineBelowView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBADB5CC1AFCC8F90067955A /* HYTimeLineBelowView.m */; };
+		FBADB5D01AFCC9630067955A /* HYTimeLineAbovePositionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FBADB5CF1AFCC9630067955A /* HYTimeLineAbovePositionModel.m */; };
+		FBADB5D31AFCC9CA0067955A /* HYTimeLineBelowPositionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FBADB5D21AFCC9CA0067955A /* HYTimeLineBelowPositionModel.m */; };
+		FBADB5D61AFCCA050067955A /* HYTimeLine.m in Sources */ = {isa = PBXBuildFile; fileRef = FBADB5D51AFCCA050067955A /* HYTimeLine.m */; };
+		FBADB5D91AFCCACB0067955A /* HYTimeLineModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FBADB5D81AFCCACB0067955A /* HYTimeLineModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,8 +72,6 @@
 		FB65201C1AFB4C52004AC694 /* HYStockChartGloablVariable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYStockChartGloablVariable.h; sourceTree = "<group>"; };
 		FB65201D1AFB4C52004AC694 /* HYStockChartGloablVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYStockChartGloablVariable.m; sourceTree = "<group>"; };
 		FB6520331AFB8973004AC694 /* KLine.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = KLine.plist; sourceTree = "<group>"; };
-		FB6520361AFB8D80004AC694 /* JMSKLineGroupModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMSKLineGroupModel.h; sourceTree = "<group>"; };
-		FB6520371AFB8D80004AC694 /* JMSKLineGroupModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMSKLineGroupModel.m; sourceTree = "<group>"; };
 		FB7063891AFC6BB4004484A7 /* HYKLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYKLine.h; sourceTree = "<group>"; };
 		FB70638A1AFC6BB4004484A7 /* HYKLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYKLine.m; sourceTree = "<group>"; };
 		FB70638B1AFC6BB4004484A7 /* HYKLineAboveView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYKLineAboveView.h; sourceTree = "<group>"; };
@@ -144,6 +149,21 @@
 		FB883DED1AF7B8D200E634EF /* HYStockChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYStockChart.h; sourceTree = "<group>"; };
 		FB883DF21AF7BA0400E634EF /* HYStockChartConstant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HYStockChartConstant.h; sourceTree = "<group>"; };
 		FB883DF31AF7BA2100E634EF /* HYStockChartConstant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYStockChartConstant.m; sourceTree = "<group>"; };
+		FBADB5C01AFCC67F0067955A /* TimeLine.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = TimeLine.plist; sourceTree = "<group>"; };
+		FBADB5C31AFCC89E0067955A /* HYTimeLineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYTimeLineView.h; sourceTree = "<group>"; };
+		FBADB5C41AFCC89E0067955A /* HYTimeLineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYTimeLineView.m; sourceTree = "<group>"; };
+		FBADB5C81AFCC8EF0067955A /* HYTimeLineAboveView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYTimeLineAboveView.h; sourceTree = "<group>"; };
+		FBADB5C91AFCC8EF0067955A /* HYTimeLineAboveView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYTimeLineAboveView.m; sourceTree = "<group>"; };
+		FBADB5CB1AFCC8F90067955A /* HYTimeLineBelowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYTimeLineBelowView.h; sourceTree = "<group>"; };
+		FBADB5CC1AFCC8F90067955A /* HYTimeLineBelowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYTimeLineBelowView.m; sourceTree = "<group>"; };
+		FBADB5CE1AFCC9630067955A /* HYTimeLineAbovePositionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYTimeLineAbovePositionModel.h; sourceTree = "<group>"; };
+		FBADB5CF1AFCC9630067955A /* HYTimeLineAbovePositionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYTimeLineAbovePositionModel.m; sourceTree = "<group>"; };
+		FBADB5D11AFCC9CA0067955A /* HYTimeLineBelowPositionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYTimeLineBelowPositionModel.h; sourceTree = "<group>"; };
+		FBADB5D21AFCC9CA0067955A /* HYTimeLineBelowPositionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYTimeLineBelowPositionModel.m; sourceTree = "<group>"; };
+		FBADB5D41AFCCA050067955A /* HYTimeLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYTimeLine.h; sourceTree = "<group>"; };
+		FBADB5D51AFCCA050067955A /* HYTimeLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYTimeLine.m; sourceTree = "<group>"; };
+		FBADB5D71AFCCACB0067955A /* HYTimeLineModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYTimeLineModel.h; sourceTree = "<group>"; };
+		FBADB5D81AFCCACB0067955A /* HYTimeLineModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYTimeLineModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,15 +200,6 @@
 				FB65201D1AFB4C52004AC694 /* HYStockChartGloablVariable.m */,
 			);
 			path = GloablVariable;
-			sourceTree = "<group>";
-		};
-		FB6520351AFB8D80004AC694 /* KLineModel */ = {
-			isa = PBXGroup;
-			children = (
-				FB6520361AFB8D80004AC694 /* JMSKLineGroupModel.h */,
-				FB6520371AFB8D80004AC694 /* JMSKLineGroupModel.m */,
-			);
-			path = KLineModel;
 			sourceTree = "<group>";
 		};
 		FB7063871AFC6BB4004484A7 /* KLine */ = {
@@ -271,6 +282,7 @@
 		FB76B74A1AF71D6300FDE90B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				FBADB5C01AFCC67F0067955A /* TimeLine.plist */,
 				FB6520331AFB8973004AC694 /* KLine.plist */,
 				FB76B7D91AF7627D00FDE90B /* stock.csv */,
 				FB76B74B1AF71D6300FDE90B /* Info.plist */,
@@ -299,11 +311,11 @@
 		FB76B7701AF71D9900FDE90B /* HYStockChart */ = {
 			isa = PBXGroup;
 			children = (
-				FB6520351AFB8D80004AC694 /* KLineModel */,
 				FB883DED1AF7B8D200E634EF /* HYStockChart.h */,
 				FB65201B1AFB4C1D004AC694 /* GloablVariable */,
 				FB883DF11AF7B94600E634EF /* Constant */,
 				FB7063871AFC6BB4004484A7 /* KLine */,
+				FBADB5C21AFCC7590067955A /* TimeLine */,
 				FB76B7CC1AF75B5E00FDE90B /* StockChartView */,
 			);
 			path = HYStockChart;
@@ -390,6 +402,43 @@
 			path = Constant;
 			sourceTree = "<group>";
 		};
+		FBADB5C21AFCC7590067955A /* TimeLine */ = {
+			isa = PBXGroup;
+			children = (
+				FBADB5C61AFCC8CB0067955A /* AboveView */,
+				FBADB5C71AFCC8CB0067955A /* BelowView */,
+				FBADB5D71AFCCACB0067955A /* HYTimeLineModel.h */,
+				FBADB5D81AFCCACB0067955A /* HYTimeLineModel.m */,
+				FBADB5C31AFCC89E0067955A /* HYTimeLineView.h */,
+				FBADB5C41AFCC89E0067955A /* HYTimeLineView.m */,
+			);
+			path = TimeLine;
+			sourceTree = "<group>";
+		};
+		FBADB5C61AFCC8CB0067955A /* AboveView */ = {
+			isa = PBXGroup;
+			children = (
+				FBADB5D41AFCCA050067955A /* HYTimeLine.h */,
+				FBADB5D51AFCCA050067955A /* HYTimeLine.m */,
+				FBADB5C81AFCC8EF0067955A /* HYTimeLineAboveView.h */,
+				FBADB5C91AFCC8EF0067955A /* HYTimeLineAboveView.m */,
+				FBADB5CE1AFCC9630067955A /* HYTimeLineAbovePositionModel.h */,
+				FBADB5CF1AFCC9630067955A /* HYTimeLineAbovePositionModel.m */,
+			);
+			path = AboveView;
+			sourceTree = "<group>";
+		};
+		FBADB5C71AFCC8CB0067955A /* BelowView */ = {
+			isa = PBXGroup;
+			children = (
+				FBADB5CB1AFCC8F90067955A /* HYTimeLineBelowView.h */,
+				FBADB5CC1AFCC8F90067955A /* HYTimeLineBelowView.m */,
+				FBADB5D11AFCC9CA0067955A /* HYTimeLineBelowPositionModel.h */,
+				FBADB5D21AFCC9CA0067955A /* HYTimeLineBelowPositionModel.m */,
+			);
+			path = BelowView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -473,6 +522,7 @@
 				FB76B7561AF71D6300FDE90B /* Main.storyboard in Resources */,
 				FB76B75B1AF71D6300FDE90B /* LaunchScreen.xib in Resources */,
 				FB76B7581AF71D6300FDE90B /* Images.xcassets in Resources */,
+				FBADB5C11AFCC67F0067955A /* TimeLine.plist in Resources */,
 				FB76B7DA1AF7627D00FDE90B /* stock.csv in Resources */,
 				FB6520341AFB8973004AC694 /* KLine.plist in Resources */,
 			);
@@ -502,22 +552,28 @@
 				FB76B7A11AF7535D00FDE90B /* View+MASAdditions.m in Sources */,
 				FB4AC6E31AF8F4170005707E /* HYKeyValueObserver.m in Sources */,
 				FB70639F1AFC6BB4004484A7 /* HYKLineVolumePositionModel.m in Sources */,
-				FB65203A1AFB8D80004AC694 /* JMSKLineGroupModel.m in Sources */,
 				FB76B79A1AF7535D00FDE90B /* MASConstraint.m in Sources */,
 				FB76B79D1AF7535D00FDE90B /* MASViewAttribute.m in Sources */,
 				FB76B7DF1AF7696E00FDE90B /* CHCSVParser.m in Sources */,
 				FB76B7A01AF7535D00FDE90B /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
+				FBADB5D61AFCCA050067955A /* HYTimeLine.m in Sources */,
 				FB76B7531AF71D6300FDE90B /* ViewController.m in Sources */,
 				FB76B7FB1AF76CE800FDE90B /* NSObject+MJKeyValue.m in Sources */,
+				FBADB5C51AFCC89E0067955A /* HYTimeLineView.m in Sources */,
 				FB70639A1AFC6BB4004484A7 /* HYKLine.m in Sources */,
+				FBADB5D31AFCC9CA0067955A /* HYTimeLineBelowPositionModel.m in Sources */,
 				FB76B7991AF7535D00FDE90B /* MASCompositeConstraint.m in Sources */,
+				FBADB5D91AFCCACB0067955A /* HYTimeLineModel.m in Sources */,
 				FB76B7F61AF76CE800FDE90B /* MJConst.m in Sources */,
+				FBADB5D01AFCC9630067955A /* HYTimeLineAbovePositionModel.m in Sources */,
+				FBADB5CD1AFCC8F90067955A /* HYTimeLineBelowView.m in Sources */,
 				FB76B7FC1AF76CE800FDE90B /* NSObject+MJProperty.m in Sources */,
 				FB7063A01AFC6BB4004484A7 /* HYKLineModel.m in Sources */,
 				FB76B7F71AF76CE800FDE90B /* MJFoundation.m in Sources */,
 				FB70639E1AFC6BB4004484A7 /* HYKLineVolume.m in Sources */,
 				FB76B79C1AF7535D00FDE90B /* MASLayoutConstraint.m in Sources */,
 				FB76B7501AF71D6300FDE90B /* AppDelegate.m in Sources */,
+				FBADB5CA1AFCC8EF0067955A /* HYTimeLineAboveView.m in Sources */,
 				FB76B7FA1AF76CE800FDE90B /* NSObject+MJCoding.m in Sources */,
 				FB76B74D1AF71D6300FDE90B /* main.m in Sources */,
 				FB76B7F81AF76CE800FDE90B /* MJProperty.m in Sources */,
