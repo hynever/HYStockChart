@@ -16,11 +16,11 @@
 
 @interface HYKLineAboveView ()
 
-@property(nonatomic,strong) NSMutableArray *needDrawKLineModels;
+@property(nonatomic,strong,readwrite) NSMutableArray *needDrawKLineModels;
 
-@property(nonatomic,strong) NSMutableArray *needDrawKLinePositionModels;
+@property(nonatomic,strong,readwrite) NSMutableArray *needDrawKLinePositionModels;
 
-@property(nonatomic,assign) NSUInteger needDrawStartIndex;
+@property(nonatomic,assign,readwrite) NSUInteger needDrawStartIndex;
 
 @property(nonatomic,assign,readonly) CGFloat startXPosition;
 
@@ -53,10 +53,11 @@
     if (!self.kLineModels) {
         return;
     }
-    //先提取需要展示的stockModel
+    //先提取需要展示的kLineModel
     [self private_extractNeedDrawModels];
     //将stockModel转换成坐标模型
     NSArray *kLinePositioinModels = [self private_convertToKLinePositionModelWithKLineModels:self.needDrawKLineModels];
+    NSMutableArray *kLineColors = [NSMutableArray array];
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextClearRect(context, rect);
     CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
@@ -70,8 +71,14 @@
         if (idx%4 == 0) {
             kLine.isNeedDrawDate = YES;
         }
-        [kLine draw];
+        UIColor *kLineColor = [kLine draw];
+        [kLineColors addObject:kLineColor];
         idx++;
+    }
+    if (self.delegate) {
+        if ([self.delegate respondsToSelector:@selector(kLineAboveViewCurrentNeedDrawKLineColors:)]) {
+            [self.delegate kLineAboveViewCurrentNeedDrawKLineColors:kLineColors];
+        }
     }
     [super drawRect:rect];
 }
@@ -79,9 +86,7 @@
 #pragma mark 重新设置相关变量，然后绘图
 -(void)drawAboveView
 {
-    if (!self.kLineModels) {
-        return;
-    }
+    NSAssert(self.kLineModels, @"kLineModels不能为空!");
     //间接调用drawRect方法
     [self setNeedsDisplay];
 }
@@ -133,18 +138,18 @@
 #pragma mark 根据原始的x的位置获得精确的X的位置
 -(CGFloat)getRightXPositionWithOriginXPosition:(CGFloat)originXPosition
 {
-    CGFloat xPositionInAboveView = originXPosition + self.scrollView.contentOffset.x - 10;
+    CGFloat xPositionInAboveView = originXPosition;
     NSInteger startIndex = (NSInteger)((xPositionInAboveView-self.startXPosition) / ([HYStockChartGloablVariable kLineGap]+[HYStockChartGloablVariable kLineWidth]));
     NSInteger arrCount = self.needDrawKLinePositionModels.count;
     for (NSInteger index = startIndex > 0 ? startIndex-1 : 0; index < arrCount; ++index) {
-        HYKLinePositionModel *kLineModel = self.needDrawKLinePositionModels[index];
-        CGFloat minX = kLineModel.highPoint.x - ([HYStockChartGloablVariable kLineGap]+[HYStockChartGloablVariable kLineWidth])/2;
-        CGFloat maxX = kLineModel.highPoint.x + ([HYStockChartGloablVariable kLineGap]+[HYStockChartGloablVariable kLineWidth])/2;
+        HYKLinePositionModel *kLinePositionModel = self.needDrawKLinePositionModels[index];
+        CGFloat minX = kLinePositionModel.highPoint.x - ([HYStockChartGloablVariable kLineGap]+[HYStockChartGloablVariable kLineWidth])/2;
+        CGFloat maxX = kLinePositionModel.highPoint.x + ([HYStockChartGloablVariable kLineGap]+[HYStockChartGloablVariable kLineWidth])/2;
         if (xPositionInAboveView > minX && xPositionInAboveView < maxX) {
             if (self.delegate && [self.delegate respondsToSelector:@selector(kLineAboveViewLongPressKLineModel:)]) {
                 [self.delegate kLineAboveViewLongPressKLineModel:self.needDrawKLinePositionModels[index]];
             }
-            return kLineModel.highPoint.x - self.scrollView.contentOffset.x+[HYStockChartGloablVariable kLineWidth]/2-[HYStockChartGloablVariable kLineGap];
+            return kLinePositionModel.highPoint.x;
         }
     }
     return 0;
@@ -170,6 +175,11 @@
         [self.needDrawKLineModels addObjectsFromArray:[self.kLineModels subarrayWithRange:NSMakeRange(needDrawKLineStartIndex, needDrawKLineCount)]];
     }else{
         [self.needDrawKLineModels addObjectsFromArray:[self.kLineModels subarrayWithRange:NSMakeRange(needDrawKLineStartIndex, self.kLineModels.count-needDrawKLineStartIndex)]];
+    }
+    if (self.delegate) {
+        if ([self.delegate respondsToSelector:@selector(kLineAboveViewCurrentNeedDrawKLineModels:)]) {
+            [self.delegate kLineAboveViewCurrentNeedDrawKLineModels:self.needDrawKLineModels];
+        }
     }
     return self.needDrawKLineModels;
 }
@@ -216,8 +226,8 @@
                         closePointY = openPoint.y + HYStockChartKLineMinWidth;
                     }
                 }else if(idx+1 < kLineModelsCount){
-                    HYKLineModel *subStockModel = kLineModels[idx+1];
-                    if (kLineModel.close < subStockModel.open) {
+                    HYKLineModel *subKLineModel = kLineModels[idx+1];
+                    if (kLineModel.close < subKLineModel.open) {
                         openPoint.y = closePointY + HYStockChartKLineMinWidth;
                     }else{
                         closePointY = openPoint.y + HYStockChartKLineMinWidth;
@@ -236,8 +246,8 @@
         if ([self.delegate respondsToSelector:@selector(kLineAboveViewCurrentMaxPrice:minPrice:)]) {
             [self.delegate kLineAboveViewCurrentMaxPrice:maxAssert minPrice:minAssert];
         }
-        if ([self.delegate respondsToSelector:@selector(kLineAboveViewNeedDrawKLinePositionModels:)]) {
-            [self.delegate kLineAboveViewNeedDrawKLinePositionModels:self.needDrawKLinePositionModels];
+        if ([self.delegate respondsToSelector:@selector(kLineAboveViewCurrentNeedDrawKLinePositionModels:)]) {
+            [self.delegate kLineAboveViewCurrentNeedDrawKLinePositionModels:self.needDrawKLinePositionModels];
         }
     }
     return self.needDrawKLinePositionModels;

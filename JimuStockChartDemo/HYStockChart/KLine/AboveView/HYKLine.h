@@ -19,7 +19,7 @@
 @property(nonatomic,strong) HYKLinePositionModel *kLinePositionModel;
 
 /**
- *  stockModel模型
+ *  kLineModel模型
  */
 @property(nonatomic,strong) HYKLineModel *kLineModel;
 
@@ -41,6 +41,6 @@
 /**
  *  绘制K线
  */
--(void)draw;
+-(UIColor *)draw;
 
 @end

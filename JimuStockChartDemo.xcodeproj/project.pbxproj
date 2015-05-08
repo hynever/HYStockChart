@@ -8,11 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		FB4AC6E31AF8F4170005707E /* HYKeyValueObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4AC6E21AF8F4170005707E /* HYKeyValueObserver.m */; };
-		FB65201A1AFB16EF004AC694 /* HYKLineBelowView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB6520191AFB16EF004AC694 /* HYKLineBelowView.m */; };
 		FB65201E1AFB4C52004AC694 /* HYStockChartGloablVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = FB65201D1AFB4C52004AC694 /* HYStockChartGloablVariable.m */; };
 		FB6520341AFB8973004AC694 /* KLine.plist in Resources */ = {isa = PBXBuildFile; fileRef = FB6520331AFB8973004AC694 /* KLine.plist */; };
 		FB65203A1AFB8D80004AC694 /* JMSKLineGroupModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FB6520371AFB8D80004AC694 /* JMSKLineGroupModel.m */; };
-		FB65203B1AFB8D80004AC694 /* JMSKLineModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FB6520391AFB8D80004AC694 /* JMSKLineModel.m */; };
+		FB70639A1AFC6BB4004484A7 /* HYKLine.m in Sources */ = {isa = PBXBuildFile; fileRef = FB70638A1AFC6BB4004484A7 /* HYKLine.m */; };
+		FB70639B1AFC6BB4004484A7 /* HYKLineAboveView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB70638C1AFC6BB4004484A7 /* HYKLineAboveView.m */; };
+		FB70639C1AFC6BB4004484A7 /* HYKLinePositionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FB70638E1AFC6BB4004484A7 /* HYKLinePositionModel.m */; };
+		FB70639D1AFC6BB4004484A7 /* HYKLineBelowView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB7063911AFC6BB4004484A7 /* HYKLineBelowView.m */; };
+		FB70639E1AFC6BB4004484A7 /* HYKLineVolume.m in Sources */ = {isa = PBXBuildFile; fileRef = FB7063931AFC6BB4004484A7 /* HYKLineVolume.m */; };
+		FB70639F1AFC6BB4004484A7 /* HYKLineVolumePositionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FB7063951AFC6BB4004484A7 /* HYKLineVolumePositionModel.m */; };
+		FB7063A01AFC6BB4004484A7 /* HYKLineModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FB7063971AFC6BB4004484A7 /* HYKLineModel.m */; };
+		FB7063A11AFC6BB4004484A7 /* HYKLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB7063991AFC6BB4004484A7 /* HYKLineView.m */; };
 		FB76B74D1AF71D6300FDE90B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FB76B74C1AF71D6300FDE90B /* main.m */; };
 		FB76B7501AF71D6300FDE90B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB76B74F1AF71D6300FDE90B /* AppDelegate.m */; };
 		FB76B7531AF71D6300FDE90B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB76B7521AF71D6300FDE90B /* ViewController.m */; };
@@ -29,8 +35,6 @@
 		FB76B79F1AF7535D00FDE90B /* NSArray+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FB76B7921AF7535D00FDE90B /* NSArray+MASAdditions.m */; };
 		FB76B7A01AF7535D00FDE90B /* NSLayoutConstraint+MASDebugAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FB76B7951AF7535D00FDE90B /* NSLayoutConstraint+MASDebugAdditions.m */; };
 		FB76B7A11AF7535D00FDE90B /* View+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FB76B7971AF7535D00FDE90B /* View+MASAdditions.m */; };
-		FB76B7D11AF75B5E00FDE90B /* HYKLine.m in Sources */ = {isa = PBXBuildFile; fileRef = FB76B7C91AF75B5E00FDE90B /* HYKLine.m */; };
-		FB76B7D21AF75B5E00FDE90B /* HYKLinePositionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FB76B7CB1AF75B5E00FDE90B /* HYKLinePositionModel.m */; };
 		FB76B7D31AF75B5E00FDE90B /* HYStockChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB76B7CE1AF75B5E00FDE90B /* HYStockChartView.m */; };
 		FB76B7DA1AF7627D00FDE90B /* stock.csv in Resources */ = {isa = PBXBuildFile; fileRef = FB76B7D91AF7627D00FDE90B /* stock.csv */; };
 		FB76B7DF1AF7696E00FDE90B /* CHCSVParser.m in Sources */ = {isa = PBXBuildFile; fileRef = FB76B7DD1AF7696E00FDE90B /* CHCSVParser.m */; };
@@ -42,10 +46,7 @@
 		FB76B7FB1AF76CE800FDE90B /* NSObject+MJKeyValue.m in Sources */ = {isa = PBXBuildFile; fileRef = FB76B7F11AF76CE800FDE90B /* NSObject+MJKeyValue.m */; };
 		FB76B7FC1AF76CE800FDE90B /* NSObject+MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = FB76B7F31AF76CE800FDE90B /* NSObject+MJProperty.m */; };
 		FB76B7FD1AF76CE800FDE90B /* NSString+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = FB76B7F51AF76CE800FDE90B /* NSString+MJExtension.m */; };
-		FB76B8021AF7B28F00FDE90B /* HYKLineAboveView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB76B8011AF7B28F00FDE90B /* HYKLineAboveView.m */; };
-		FB883DF01AF7B8D200E634EF /* HYKLineModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FB883DEF1AF7B8D200E634EF /* HYKLineModel.m */; };
 		FB883DF41AF7BA2100E634EF /* HYStockChartConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = FB883DF31AF7BA2100E634EF /* HYStockChartConstant.m */; };
-		FB883DF71AF7BFA100E634EF /* HYKLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB883DF61AF7BFA100E634EF /* HYKLineView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,15 +62,27 @@
 /* Begin PBXFileReference section */
 		FB4AC6E11AF8F4170005707E /* HYKeyValueObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYKeyValueObserver.h; sourceTree = "<group>"; };
 		FB4AC6E21AF8F4170005707E /* HYKeyValueObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYKeyValueObserver.m; sourceTree = "<group>"; };
-		FB6520181AFB16EF004AC694 /* HYKLineBelowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYKLineBelowView.h; sourceTree = "<group>"; };
-		FB6520191AFB16EF004AC694 /* HYKLineBelowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYKLineBelowView.m; sourceTree = "<group>"; };
 		FB65201C1AFB4C52004AC694 /* HYStockChartGloablVariable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYStockChartGloablVariable.h; sourceTree = "<group>"; };
 		FB65201D1AFB4C52004AC694 /* HYStockChartGloablVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYStockChartGloablVariable.m; sourceTree = "<group>"; };
 		FB6520331AFB8973004AC694 /* KLine.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = KLine.plist; sourceTree = "<group>"; };
 		FB6520361AFB8D80004AC694 /* JMSKLineGroupModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMSKLineGroupModel.h; sourceTree = "<group>"; };
 		FB6520371AFB8D80004AC694 /* JMSKLineGroupModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMSKLineGroupModel.m; sourceTree = "<group>"; };
-		FB6520381AFB8D80004AC694 /* JMSKLineModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMSKLineModel.h; sourceTree = "<group>"; };
-		FB6520391AFB8D80004AC694 /* JMSKLineModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMSKLineModel.m; sourceTree = "<group>"; };
+		FB7063891AFC6BB4004484A7 /* HYKLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYKLine.h; sourceTree = "<group>"; };
+		FB70638A1AFC6BB4004484A7 /* HYKLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYKLine.m; sourceTree = "<group>"; };
+		FB70638B1AFC6BB4004484A7 /* HYKLineAboveView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYKLineAboveView.h; sourceTree = "<group>"; };
+		FB70638C1AFC6BB4004484A7 /* HYKLineAboveView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYKLineAboveView.m; sourceTree = "<group>"; };
+		FB70638D1AFC6BB4004484A7 /* HYKLinePositionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYKLinePositionModel.h; sourceTree = "<group>"; };
+		FB70638E1AFC6BB4004484A7 /* HYKLinePositionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYKLinePositionModel.m; sourceTree = "<group>"; };
+		FB7063901AFC6BB4004484A7 /* HYKLineBelowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYKLineBelowView.h; sourceTree = "<group>"; };
+		FB7063911AFC6BB4004484A7 /* HYKLineBelowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYKLineBelowView.m; sourceTree = "<group>"; };
+		FB7063921AFC6BB4004484A7 /* HYKLineVolume.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYKLineVolume.h; sourceTree = "<group>"; };
+		FB7063931AFC6BB4004484A7 /* HYKLineVolume.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYKLineVolume.m; sourceTree = "<group>"; };
+		FB7063941AFC6BB4004484A7 /* HYKLineVolumePositionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYKLineVolumePositionModel.h; sourceTree = "<group>"; };
+		FB7063951AFC6BB4004484A7 /* HYKLineVolumePositionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYKLineVolumePositionModel.m; sourceTree = "<group>"; };
+		FB7063961AFC6BB4004484A7 /* HYKLineModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYKLineModel.h; sourceTree = "<group>"; };
+		FB7063971AFC6BB4004484A7 /* HYKLineModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYKLineModel.m; sourceTree = "<group>"; };
+		FB7063981AFC6BB4004484A7 /* HYKLineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYKLineView.h; sourceTree = "<group>"; };
+		FB7063991AFC6BB4004484A7 /* HYKLineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYKLineView.m; sourceTree = "<group>"; };
 		FB76B7471AF71D6300FDE90B /* JimuStockChartDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JimuStockChartDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB76B74B1AF71D6300FDE90B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FB76B74C1AF71D6300FDE90B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -106,10 +119,6 @@
 		FB76B7961AF7535D00FDE90B /* View+MASAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "View+MASAdditions.h"; sourceTree = "<group>"; };
 		FB76B7971AF7535D00FDE90B /* View+MASAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "View+MASAdditions.m"; sourceTree = "<group>"; };
 		FB76B7981AF7535D00FDE90B /* View+MASShorthandAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "View+MASShorthandAdditions.h"; sourceTree = "<group>"; };
-		FB76B7C81AF75B5E00FDE90B /* HYKLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYKLine.h; sourceTree = "<group>"; };
-		FB76B7C91AF75B5E00FDE90B /* HYKLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYKLine.m; sourceTree = "<group>"; };
-		FB76B7CA1AF75B5E00FDE90B /* HYKLinePositionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYKLinePositionModel.h; sourceTree = "<group>"; };
-		FB76B7CB1AF75B5E00FDE90B /* HYKLinePositionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYKLinePositionModel.m; sourceTree = "<group>"; };
 		FB76B7CD1AF75B5E00FDE90B /* HYStockChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYStockChartView.h; sourceTree = "<group>"; };
 		FB76B7CE1AF75B5E00FDE90B /* HYStockChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYStockChartView.m; sourceTree = "<group>"; };
 		FB76B7D91AF7627D00FDE90B /* stock.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = stock.csv; sourceTree = "<group>"; };
@@ -132,15 +141,9 @@
 		FB76B7F31AF76CE800FDE90B /* NSObject+MJProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJProperty.m"; sourceTree = "<group>"; };
 		FB76B7F41AF76CE800FDE90B /* NSString+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MJExtension.h"; sourceTree = "<group>"; };
 		FB76B7F51AF76CE800FDE90B /* NSString+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MJExtension.m"; sourceTree = "<group>"; };
-		FB76B8001AF7B28F00FDE90B /* HYKLineAboveView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYKLineAboveView.h; sourceTree = "<group>"; };
-		FB76B8011AF7B28F00FDE90B /* HYKLineAboveView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYKLineAboveView.m; sourceTree = "<group>"; };
 		FB883DED1AF7B8D200E634EF /* HYStockChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYStockChart.h; sourceTree = "<group>"; };
-		FB883DEE1AF7B8D200E634EF /* HYKLineModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYKLineModel.h; sourceTree = "<group>"; };
-		FB883DEF1AF7B8D200E634EF /* HYKLineModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYKLineModel.m; sourceTree = "<group>"; };
 		FB883DF21AF7BA0400E634EF /* HYStockChartConstant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HYStockChartConstant.h; sourceTree = "<group>"; };
 		FB883DF31AF7BA2100E634EF /* HYStockChartConstant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYStockChartConstant.m; sourceTree = "<group>"; };
-		FB883DF51AF7BFA100E634EF /* HYKLineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYKLineView.h; sourceTree = "<group>"; };
-		FB883DF61AF7BFA100E634EF /* HYKLineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYKLineView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,10 +187,47 @@
 			children = (
 				FB6520361AFB8D80004AC694 /* JMSKLineGroupModel.h */,
 				FB6520371AFB8D80004AC694 /* JMSKLineGroupModel.m */,
-				FB6520381AFB8D80004AC694 /* JMSKLineModel.h */,
-				FB6520391AFB8D80004AC694 /* JMSKLineModel.m */,
 			);
 			path = KLineModel;
+			sourceTree = "<group>";
+		};
+		FB7063871AFC6BB4004484A7 /* KLine */ = {
+			isa = PBXGroup;
+			children = (
+				FB7063881AFC6BB4004484A7 /* AboveView */,
+				FB70638F1AFC6BB4004484A7 /* BelowView */,
+				FB7063961AFC6BB4004484A7 /* HYKLineModel.h */,
+				FB7063971AFC6BB4004484A7 /* HYKLineModel.m */,
+				FB7063981AFC6BB4004484A7 /* HYKLineView.h */,
+				FB7063991AFC6BB4004484A7 /* HYKLineView.m */,
+			);
+			path = KLine;
+			sourceTree = "<group>";
+		};
+		FB7063881AFC6BB4004484A7 /* AboveView */ = {
+			isa = PBXGroup;
+			children = (
+				FB7063891AFC6BB4004484A7 /* HYKLine.h */,
+				FB70638A1AFC6BB4004484A7 /* HYKLine.m */,
+				FB70638B1AFC6BB4004484A7 /* HYKLineAboveView.h */,
+				FB70638C1AFC6BB4004484A7 /* HYKLineAboveView.m */,
+				FB70638D1AFC6BB4004484A7 /* HYKLinePositionModel.h */,
+				FB70638E1AFC6BB4004484A7 /* HYKLinePositionModel.m */,
+			);
+			path = AboveView;
+			sourceTree = "<group>";
+		};
+		FB70638F1AFC6BB4004484A7 /* BelowView */ = {
+			isa = PBXGroup;
+			children = (
+				FB7063901AFC6BB4004484A7 /* HYKLineBelowView.h */,
+				FB7063911AFC6BB4004484A7 /* HYKLineBelowView.m */,
+				FB7063921AFC6BB4004484A7 /* HYKLineVolume.h */,
+				FB7063931AFC6BB4004484A7 /* HYKLineVolume.m */,
+				FB7063941AFC6BB4004484A7 /* HYKLineVolumePositionModel.h */,
+				FB7063951AFC6BB4004484A7 /* HYKLineVolumePositionModel.m */,
+			);
+			path = BelowView;
 			sourceTree = "<group>";
 		};
 		FB76B73E1AF71D6300FDE90B = {
@@ -261,11 +301,9 @@
 			children = (
 				FB6520351AFB8D80004AC694 /* KLineModel */,
 				FB883DED1AF7B8D200E634EF /* HYStockChart.h */,
-				FB883DEE1AF7B8D200E634EF /* HYKLineModel.h */,
-				FB883DEF1AF7B8D200E634EF /* HYKLineModel.m */,
 				FB65201B1AFB4C1D004AC694 /* GloablVariable */,
 				FB883DF11AF7B94600E634EF /* Constant */,
-				FB76B7C51AF75B5E00FDE90B /* KLine */,
+				FB7063871AFC6BB4004484A7 /* KLine */,
 				FB76B7CC1AF75B5E00FDE90B /* StockChartView */,
 			);
 			path = HYStockChart;
@@ -299,23 +337,6 @@
 				FB76B7981AF7535D00FDE90B /* View+MASShorthandAdditions.h */,
 			);
 			path = Masonry;
-			sourceTree = "<group>";
-		};
-		FB76B7C51AF75B5E00FDE90B /* KLine */ = {
-			isa = PBXGroup;
-			children = (
-				FB76B7C81AF75B5E00FDE90B /* HYKLine.h */,
-				FB76B7C91AF75B5E00FDE90B /* HYKLine.m */,
-				FB76B7CA1AF75B5E00FDE90B /* HYKLinePositionModel.h */,
-				FB76B7CB1AF75B5E00FDE90B /* HYKLinePositionModel.m */,
-				FB6520181AFB16EF004AC694 /* HYKLineBelowView.h */,
-				FB6520191AFB16EF004AC694 /* HYKLineBelowView.m */,
-				FB76B8001AF7B28F00FDE90B /* HYKLineAboveView.h */,
-				FB76B8011AF7B28F00FDE90B /* HYKLineAboveView.m */,
-				FB883DF51AF7BFA100E634EF /* HYKLineView.h */,
-				FB883DF61AF7BFA100E634EF /* HYKLineView.m */,
-			);
-			path = KLine;
 			sourceTree = "<group>";
 		};
 		FB76B7CC1AF75B5E00FDE90B /* StockChartView */ = {
@@ -471,17 +492,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FB65203B1AFB8D80004AC694 /* JMSKLineModel.m in Sources */,
-				FB76B7D11AF75B5E00FDE90B /* HYKLine.m in Sources */,
 				FB76B7D31AF75B5E00FDE90B /* HYStockChartView.m in Sources */,
 				FB76B7F91AF76CE800FDE90B /* MJType.m in Sources */,
-				FB76B8021AF7B28F00FDE90B /* HYKLineAboveView.m in Sources */,
 				FB76B79F1AF7535D00FDE90B /* NSArray+MASAdditions.m in Sources */,
+				FB70639D1AFC6BB4004484A7 /* HYKLineBelowView.m in Sources */,
 				FB65201E1AFB4C52004AC694 /* HYStockChartGloablVariable.m in Sources */,
 				FB76B79E1AF7535D00FDE90B /* MASViewConstraint.m in Sources */,
 				FB76B79B1AF7535D00FDE90B /* MASConstraintMaker.m in Sources */,
 				FB76B7A11AF7535D00FDE90B /* View+MASAdditions.m in Sources */,
 				FB4AC6E31AF8F4170005707E /* HYKeyValueObserver.m in Sources */,
+				FB70639F1AFC6BB4004484A7 /* HYKLineVolumePositionModel.m in Sources */,
 				FB65203A1AFB8D80004AC694 /* JMSKLineGroupModel.m in Sources */,
 				FB76B79A1AF7535D00FDE90B /* MASConstraint.m in Sources */,
 				FB76B79D1AF7535D00FDE90B /* MASViewAttribute.m in Sources */,
@@ -489,21 +509,23 @@
 				FB76B7A01AF7535D00FDE90B /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				FB76B7531AF71D6300FDE90B /* ViewController.m in Sources */,
 				FB76B7FB1AF76CE800FDE90B /* NSObject+MJKeyValue.m in Sources */,
-				FB76B7D21AF75B5E00FDE90B /* HYKLinePositionModel.m in Sources */,
+				FB70639A1AFC6BB4004484A7 /* HYKLine.m in Sources */,
 				FB76B7991AF7535D00FDE90B /* MASCompositeConstraint.m in Sources */,
 				FB76B7F61AF76CE800FDE90B /* MJConst.m in Sources */,
 				FB76B7FC1AF76CE800FDE90B /* NSObject+MJProperty.m in Sources */,
+				FB7063A01AFC6BB4004484A7 /* HYKLineModel.m in Sources */,
 				FB76B7F71AF76CE800FDE90B /* MJFoundation.m in Sources */,
+				FB70639E1AFC6BB4004484A7 /* HYKLineVolume.m in Sources */,
 				FB76B79C1AF7535D00FDE90B /* MASLayoutConstraint.m in Sources */,
 				FB76B7501AF71D6300FDE90B /* AppDelegate.m in Sources */,
 				FB76B7FA1AF76CE800FDE90B /* NSObject+MJCoding.m in Sources */,
-				FB65201A1AFB16EF004AC694 /* HYKLineBelowView.m in Sources */,
 				FB76B74D1AF71D6300FDE90B /* main.m in Sources */,
 				FB76B7F81AF76CE800FDE90B /* MJProperty.m in Sources */,
-				FB883DF01AF7B8D200E634EF /* HYKLineModel.m in Sources */,
+				FB70639C1AFC6BB4004484A7 /* HYKLinePositionModel.m in Sources */,
+				FB70639B1AFC6BB4004484A7 /* HYKLineAboveView.m in Sources */,
+				FB7063A11AFC6BB4004484A7 /* HYKLineView.m in Sources */,
 				FB883DF41AF7BA2100E634EF /* HYStockChartConstant.m in Sources */,
 				FB76B7FD1AF76CE800FDE90B /* NSString+MJExtension.m in Sources */,
-				FB883DF71AF7BFA100E634EF /* HYKLineView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

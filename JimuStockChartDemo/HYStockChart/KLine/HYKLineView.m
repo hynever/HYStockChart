@@ -24,8 +24,6 @@
 
 @property(nonatomic,strong) HYKLineBelowView *kLineBelowView;
 
-@property(nonatomic,strong) NSMutableArray *needDrawStockModels;
-
 @end
 
 @implementation HYKLineView
@@ -35,12 +33,9 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        //默认的宽度
-        self.needDrawStockModels = [NSMutableArray array];
         self.priceView.backgroundColor = [UIColor redColor];
         self.scrollView.backgroundColor = [UIColor whiteColor];
         self.aboveViewRatio = 0.7;
-        self.kLineBelowView.backgroundColor = [UIColor yellowColor];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(event_deviceOrientationDidChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     }
     return self;
@@ -120,7 +115,7 @@
     return _kLineBelowView;
 }
 
-#pragma mark stockModels的设置方法
+#pragma mark kLineModels的设置方法
 -(void)setKLineModels:(NSArray *)kLineModels
 {
     if (!kLineModels) {
@@ -159,7 +154,7 @@
     static UIView *verticalView = nil;
     static CGFloat oldPositionX = 0;
     if (UIGestureRecognizerStateChanged == longPress.state || UIGestureRecognizerStateBegan == longPress.state) {
-        CGPoint location = [longPress locationInView:self];
+        CGPoint location = [longPress locationInView:self.scrollView];
         if (ABS(oldPositionX - location.x) < ([HYStockChartGloablVariable kLineWidth]+[HYStockChartGloablVariable kLineGap])/2) {
             return;
         }
@@ -170,7 +165,7 @@
         if (!verticalView) {
             verticalView = [UIView new];
             verticalView.clipsToBounds = YES;
-            [self addSubview:verticalView];
+            [self.scrollView addSubview:verticalView];
             verticalView.backgroundColor = [UIColor blackColor];
             [verticalView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self);
@@ -201,13 +196,9 @@
 #pragma mark 屏幕旋转执行的方法
 -(void)event_deviceOrientationDidChanged:(NSNotification *)noti
 {
-    //更新AboveView
-    if (self.kLineAboveView) {
-        [self.kLineAboveView updateAboveViewWidth];
-        [self.kLineAboveView drawAboveView];
+    if (_kLineBelowView && _kLineAboveView && self.kLineModels) {
+        [self private_drawKLineAboveView];
     }
-    //更新BelowView
-#warning 还没有写
 }
 
 
@@ -217,7 +208,17 @@
 {
     NSAssert(self.kLineAboveView != nil, @"画kLineAboveView之前，kLineAboveView不能为空");
     self.kLineAboveView.kLineModels = self.kLineModels;
+    [self.kLineAboveView updateAboveViewWidth];
     [self.kLineAboveView drawAboveView];
+}
+
+#pragma mark 画KLineBelowView
+-(void)private_drawKLineBelowView
+{
+    NSAssert(self.kLineBelowView != nil, @"画kLineBelowView之前，kLineBelowView不能为空");
+    //因为belowView的宽度和aboveView的宽度是一致的，所以只需要更新约束就可以了
+    [self.kLineBelowView layoutIfNeeded];
+    [self.kLineBelowView drawBelowView];
 }
 
 #pragma mark - HYKLAboveView的代理方法
@@ -234,11 +235,20 @@
     
 }
 
-#pragma mark 需要展示的kLineModel的模型数组
--(void)kLineAboveViewNeedDrawKLineModels:(NSArray *)kLineModels
+-(void)kLineAboveViewCurrentNeedDrawKLineModels:(NSArray *)needDrawKLineModels
 {
-    
+    self.kLineBelowView.needDrawKLineModels = needDrawKLineModels;
 }
 
+-(void)kLineAboveViewCurrentNeedDrawKLinePositionModels:(NSArray *)needDrawKLinePositionModels
+{
+    self.kLineBelowView.needDrawKLinePositionModels = needDrawKLinePositionModels;
+}
+
+-(void)kLineAboveViewCurrentNeedDrawKLineColors:(NSArray *)kLineColors
+{
+    self.kLineBelowView.kLineColors = kLineColors;
+    [self private_drawKLineBelowView];
+}
 
 @end

@@ -29,6 +29,16 @@
  */
 @property(nonatomic,weak) id<HYKLineAboveViewDelegate> delegate;
 
+/**
+ *  需要绘制的K线位置模型数组
+ */
+//@property(nonatomic,strong,readonly) NSMutableArray *needDrawKLinePositionModels;
+
+/**
+ *  需要绘制的K线模型数组
+ */
+//@property(nonatomic,strong,readonly) NSMutableArray *needDrawKLineModels;
+
 
 /**
  *  画AboveView上的所有图
@@ -65,8 +75,18 @@
 -(void)kLineAboveViewCurrentMaxPrice:(CGFloat)maxPrice minPrice:(CGFloat)minPrice;
 
 /**
- *  需要展示的kLineModel的模型数组
+ *  当前需要绘制的K线模型数组
  */
--(void)kLineAboveViewNeedDrawKLinePositionModels:(NSArray *)kLineModels;
+-(void)kLineAboveViewCurrentNeedDrawKLineModels:(NSArray *)needDrawKLineModels;
+
+/**
+ *  当前需要绘制的K线位置模型数组
+ */
+-(void)kLineAboveViewCurrentNeedDrawKLinePositionModels:(NSArray *)needDrawKLinePositionModels;
+
+/**
+ *  当前需要绘制的K线的颜色数组
+ */
+-(void)kLineAboveViewCurrentNeedDrawKLineColors:(NSArray *)kLineColors;
 
 @end

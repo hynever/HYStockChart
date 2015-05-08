@@ -32,11 +32,11 @@
 
 
 #pragma mark 绘制K线
--(void)draw
+-(UIColor *)draw
 {
     //如果没有数据，直接返回
     if (!self.kLineModel || !self.context || !self.kLineModel) {
-        return;
+        return nil;
     }
     
     CGContextRef context = self.context;
@@ -78,6 +78,7 @@
         [dateStr drawAtPoint:CGPointMake(self.kLinePositionModel.highPoint.x-dateSize.width/2, self.maxY-2) withAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10],NSForegroundColorAttributeName:[UIColor redColor]}];
         self.isNeedDrawDate = NO;
     }
+    return strokeColor;
 }
 
 /**
