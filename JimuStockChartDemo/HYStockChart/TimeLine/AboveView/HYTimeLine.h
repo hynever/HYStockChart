@@ -6,9 +6,18 @@
 //  Copyright (c) 2015年 jimubox. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import "HYTimeLineAbovePositionModel.h"
 
 /************************用于画分时线的画笔************************/
 @interface HYTimeLine : NSObject
+
+@property(nonatomic,strong) NSArray *positionModels;
+
+@property(nonatomic,assign) CGFloat horizontalYPosition;
+
+-(instancetype)initWithContext:(CGContextRef)context;
+
+-(void)draw;
 
 @end

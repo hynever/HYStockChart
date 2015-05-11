@@ -166,7 +166,7 @@
             verticalView = [UIView new];
             verticalView.clipsToBounds = YES;
             [self.scrollView addSubview:verticalView];
-            verticalView.backgroundColor = [UIColor blackColor];
+            verticalView.backgroundColor = HYVerticalViewColor;
             [verticalView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self);
                 make.width.equalTo(@1);

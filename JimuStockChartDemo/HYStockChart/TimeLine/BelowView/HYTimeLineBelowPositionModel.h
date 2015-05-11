@@ -6,9 +6,13 @@
 //  Copyright (c) 2015年 jimubox. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 /************************分时线下面的view的位置模型************************/
 @interface HYTimeLineBelowPositionModel : NSObject
+
+@property(nonatomic,assign) CGPoint startPoint;
+
+@property(nonatomic,assign) CGPoint endPoint;
 
 @end

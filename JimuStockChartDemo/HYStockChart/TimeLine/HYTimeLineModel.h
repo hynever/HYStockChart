@@ -6,8 +6,12 @@
 //  Copyright (c) 2015年 jimubox. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface HYTimeLineModel : NSObject
+
+@property(nonatomic,assign) CGFloat currentPrice;
+
+@property(nonatomic,copy) NSString *currentTime;
 
 @end

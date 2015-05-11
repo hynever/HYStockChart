@@ -10,7 +10,7 @@
 #import "HYKLinePositionModel.h"
 #import "HYKLineModel.h"
 
-/************************K线************************/
+/************************K线的画笔************************/
 @interface HYKLine : NSObject
 
 /**

@@ -10,7 +10,7 @@
 #import "HYKLineVolumePositionModel.h"
 #import "HYKLineModel.h"
 
-/************************画成交量线的模型************************/
+/************************画成交量线的画笔************************/
 @interface HYKLineVolume : NSObject
 
 /**

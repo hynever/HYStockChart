@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HYTimeLineGroupModel.h"
 
 @interface HYTimeLineView : UIView
 
-@property(nonatomic,strong) NSArray *timeLineModels;
+@property(nonatomic,strong) HYTimeLineGroupModel *timeLineGroupModel;
 
 @property(nonatomic,assign) CGFloat aboveViewRatio;
-
 
 @end

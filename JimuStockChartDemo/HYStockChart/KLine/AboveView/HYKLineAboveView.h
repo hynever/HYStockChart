@@ -51,7 +51,7 @@
 -(void)updateAboveViewWidth;
 
 /**
- *  根据原始的x的位置获得精确的X的位置
+ *  长按的时候根据原始的x的位置获得精确的X的位置
  */
 -(CGFloat)getRightXPositionWithOriginXPosition:(CGFloat)originXPosition;
 

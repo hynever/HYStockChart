@@ -7,7 +7,15 @@
 //
 
 #import "HYTimeLineModel.h"
+#import "MJExtension.h"
 
 @implementation HYTimeLineModel
+
++(NSDictionary *)replacedKeyFromPropertyName
+{
+    return @{@"currentPrice":@"Close",
+             @"currentTime":@"EndTime"
+    };
+}
 
 @end

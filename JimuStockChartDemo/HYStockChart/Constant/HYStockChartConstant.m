@@ -45,4 +45,19 @@ CGFloat const HYStockChartScaleFactor = 0.03;
  */
 NSString * const HYStockChartContentOffsetKey = @"contentOffset";
 
+/**
+ *  时分线的宽度
+ */
+CGFloat const HYStockChartTimeLineLineWidth = 0.5;
+
+/**
+ *  分时线的timeLabelView的高度
+ */
+CGFloat const HYStockChartTimeLineTimeLabelViewHeight = 10;
+
+/**
+ *  时分线的成交量的线宽
+ */
+CGFloat const HYStockChartTimeLineVolumeLineWidth = 2;
+
 #endif

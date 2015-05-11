@@ -63,7 +63,7 @@
     CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
     CGContextFillRect(context, rect);
     HYKLine *kLine = [[HYKLine alloc] initWithContext:context];
-    kLine.maxY = HYStockChartAboveViewMaxY;
+    kLine.maxY = HYStockChartKLineAboveViewMaxY;
     NSInteger idx = 0;
     for (HYKLinePositionModel *kLinePositionModel in kLinePositioinModels) {
         kLine.kLinePositionModel = kLinePositionModel;
@@ -199,8 +199,8 @@
             minAssert = kLineModel.low;
         }
     }
-    CGFloat minY = HYStockChartAboveViewMinY;
-    CGFloat maxY = HYStockChartAboveViewMaxY;
+    CGFloat minY = HYStockChartKLineAboveViewMinY;
+    CGFloat maxY = HYStockChartKLineAboveViewMaxY;
     CGFloat unitValue = (maxAssert - minAssert)/(maxY - minY);
 
     [self.needDrawKLinePositionModels removeAllObjects];

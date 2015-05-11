@@ -69,8 +69,8 @@
 #pragma mark 根据KLineMoel转换成Position数组
 -(NSArray *)private_convertToKLinePositionModelWithKLineModels:(NSArray *)kLineModels
 {
-    CGFloat minY = HYStockChartBelowViewMinY;
-    CGFloat maxY = HYStockChartBelowViewMaxY;
+    CGFloat minY = HYStockChartKLineBelowViewMinY;
+    CGFloat maxY = HYStockChartKLineBelowViewMaxY;
     HYKLineModel *firstModel = [kLineModels firstObject];
     __block CGFloat minVolume = [firstModel volume];
     __block CGFloat maxVolume = [firstModel volume];
@@ -90,11 +90,11 @@
         HYKLinePositionModel *kLinePositionModel = self.needDrawKLinePositionModels[idx];
         CGFloat xPosition = kLinePositionModel.highPoint.x;
         CGFloat yPosition = ABS(maxY - ((kLineModel.volume - minVolume)/unitValue));
-        if (ABS(yPosition - HYStockChartBelowViewMaxY) < 0.5) {
+        if (ABS(yPosition - HYStockChartKLineBelowViewMaxY) < 0.5) {
             yPosition = 1;
         }
         CGPoint startPoint = CGPointMake(xPosition, yPosition);
-        CGPoint endPoint = CGPointMake(xPosition, HYStockChartBelowViewMaxY);
+        CGPoint endPoint = CGPointMake(xPosition, HYStockChartKLineBelowViewMaxY);
         HYKLineVolumePositionModel *volumePositionModel = [HYKLineVolumePositionModel volumePositionModelWithStartPoint:startPoint Y:endPoint];
         [volumePositionModels addObject:volumePositionModel];
     }];

@@ -8,7 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@class HYTimeLineModel;
 /************************分时线下面的view************************/
 @interface HYTimeLineBelowView : UIView
+
+@property(nonatomic,strong) NSArray *timeLineModels;
+
+@property(nonatomic,strong) NSArray *xPositionArray;
+
+/**
+ *  画下面的view
+ */
+-(void)drawBelowView;
 
 @end

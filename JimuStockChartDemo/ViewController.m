@@ -16,6 +16,7 @@
 #import "HYTimeLineModel.h"
 #import "HYTimeLine.h"
 #import "HYTimeLineView.h"
+#import "HYTimeLineGroupModel.h"
 
 
 @interface ViewController ()
@@ -36,6 +37,15 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//    formatter.dateStyle = kCFDateFormatterShortStyle;
+    formatter.dateFormat = @"HH:mm";
+    formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+    NSString *dateStr = @"09:11";
+    NSDate *date = [formatter dateFromString:dateStr];
+    
+    
 //    self.kLineView.backgroundColor = [UIColor whiteColor];
     [self.timeLineView setBackgroundColor:[UIColor whiteColor]];
     [self.updateDataBtn setTitle:@"更新数据" forState:UIControlStateNormal];
@@ -115,7 +125,7 @@
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"TimeLine" ofType:@"plist"];
     NSArray *arr = [NSArray arrayWithContentsOfFile:filePath];
     NSArray *timeLineModels = [HYTimeLineModel objectArrayWithKeyValuesArray:arr];
-    self.timeLineView.timeLineModels = timeLineModels;
+    self.timeLineView.timeLineGroupModel = [HYTimeLineGroupModel  groupModelWithTimeModels:timeLineModels lastDayEndPrice:0];
 }
 
 - (void)didReceiveMemoryWarning {
