@@ -131,4 +131,9 @@ extern CGFloat const HYStockChartTimeLineVolumeLineWidth;
  */
 extern CGFloat const HYStockChartTimeLineTimeLabelViewHeight;
 
+/**
+ *  长按时的线的宽度
+ */
+extern CGFloat const HYStockChartLongPressVerticalViewWidth;
+
 #endif

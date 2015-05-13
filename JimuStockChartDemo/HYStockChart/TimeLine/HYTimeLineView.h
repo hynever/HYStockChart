@@ -15,4 +15,6 @@
 
 @property(nonatomic,assign) CGFloat aboveViewRatio;
 
+@property(nonatomic,assign) BOOL isNeedDrawTime;
+
 @end

@@ -132,7 +132,7 @@
             verticalView.backgroundColor = HYVerticalViewColor;
             [verticalView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self);
-                make.width.equalTo(@1);
+                make.width.equalTo(@(HYStockChartLongPressVerticalViewWidth));
                 make.height.equalTo(self.mas_height);
                 make.left.equalTo(@0);
             }];

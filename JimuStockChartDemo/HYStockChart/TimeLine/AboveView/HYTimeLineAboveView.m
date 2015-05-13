@@ -34,7 +34,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         _positionModels = nil;
-        self.timeLabelView.backgroundColor = [UIColor clearColor];
+//        self.timeLabelView.backgroundColor = [UIColor clearColor];
     }
     return self;
 }
@@ -47,7 +47,7 @@
     }
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextClearRect(context, rect);
-    CGContextSetFillColorWithColor(context, [UIColor yellowColor].CGColor);
+    CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
     CGContextFillRect(context, rect);
     HYTimeLine *timeLine = [[HYTimeLine alloc] initWithContext:context];
     timeLine.positionModels = [self private_convertTimeLineModlesToPositionModel];
@@ -60,6 +60,7 @@
     _groupModel = groupModel;
     if (groupModel) {
         self.timeLineModels = groupModel.timeModels;
+        self.timeLabelView.backgroundColor = [UIColor clearColor];
     }
 }
 

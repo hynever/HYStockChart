@@ -58,6 +58,11 @@ CGFloat const HYStockChartTimeLineTimeLabelViewHeight = 10;
 /**
  *  时分线的成交量的线宽
  */
-CGFloat const HYStockChartTimeLineVolumeLineWidth = 2;
+CGFloat const HYStockChartTimeLineVolumeLineWidth = 0.5;
+
+/**
+ *  长按时的线的宽度
+ */
+CGFloat const HYStockChartLongPressVerticalViewWidth = 0.5;
 
 #endif

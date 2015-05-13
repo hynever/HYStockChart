@@ -157,22 +157,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "JimuStockChartDemo/HYStockChart/TimeLine/AboveView/HYTimeLineAboveView.m"
-            timestampString = "453043787.240361"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
-            landmarkName = "-private_convertTimeLineModlesToPositionModel"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "JimuStockChartDemo/HYStockChart/TimeLine/BelowView/HYTimeLineBelowView.m"
             timestampString = "453044702.497315"
             startingColumnNumber = "9223372036854775807"
