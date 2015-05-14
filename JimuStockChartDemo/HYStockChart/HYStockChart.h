@@ -10,5 +10,8 @@
 #define JimuStockChartDemo_HYStockChart_h
 
 #import "HYStockChartView.h"
+#import "HYKLineView.h"
+#import "HYTimeLineView.h"
+#import "HYKLineModel.h"
 
 #endif

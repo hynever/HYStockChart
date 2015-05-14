@@ -66,7 +66,7 @@
         [self addSubview:_segmentView];
         [_segmentView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.left.right.equalTo(self);
-            make.height.equalTo(@50);
+            make.height.equalTo(@30);
         }];
     }
     return _segmentView;
@@ -116,14 +116,26 @@
         HYStockChartViewItemModel *firstModel = [itemModels firstObject];
         self.currentCenterViewType = firstModel.centerViewType;
     }
+    if (self.dataSource) {
+        self.segmentView.selectedIndex = 0;
+    }
 }
 
+#pragma mark dataSource的设置方法
+-(void)setDataSource:(id<HYStockChartViewDataSource>)dataSource
+{
+    _dataSource = dataSource;
+    if (self.itemModels) {
+        self.segmentView.selectedIndex = 0;
+    }
+}
 
 /**
  *  重新加载数据
  */
 -(void)reloadData
 {
+    self.segmentView.selectedIndex = self.segmentView.selectedIndex;
 }
 
 #pragma mark HYStockChartSegmentViewDelegate代理方法
@@ -139,10 +151,11 @@
             if (type == HYStockChartCenterViewTypeKLine) {
                 self.timeLineView.hidden = YES;
                 self.kLineView.hidden = NO;
-                
+//                [self bringSubviewToFront:self.kLineView];
             }else{
-                self.timeLineView.hidden = YES;
-                self.kLineView.hidden = NO;
+                self.timeLineView.hidden = NO;
+                self.kLineView.hidden = YES;
+//                [self bringSubviewToFront:self.kLineView];
             }
         }
         

@@ -320,8 +320,8 @@
 		FB76B7701AF71D9900FDE90B /* HYStockChart */ = {
 			isa = PBXGroup;
 			children = (
-				FBC5377D1B0379AC00BDF345 /* SegmentView */,
 				FB883DED1AF7B8D200E634EF /* HYStockChart.h */,
+				FBC5377D1B0379AC00BDF345 /* SegmentView */,
 				FB65201B1AFB4C1D004AC694 /* GloablVariable */,
 				FB883DF11AF7B94600E634EF /* Constant */,
 				FB7063871AFC6BB4004484A7 /* KLine */,

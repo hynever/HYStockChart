@@ -34,7 +34,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.priceView.backgroundColor = [UIColor redColor];
-        self.scrollView.backgroundColor = [UIColor whiteColor];
+//        self.scrollView.backgroundColor = [UIColor whiteColor];
         self.aboveViewRatio = 0.7;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(event_deviceOrientationDidChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     }
@@ -249,6 +249,11 @@
 {
     self.kLineBelowView.kLineColors = kLineColors;
     [self private_drawKLineBelowView];
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

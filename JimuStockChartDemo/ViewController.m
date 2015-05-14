@@ -9,17 +9,11 @@
 #import "ViewController.h"
 #import "Masonry.h"
 #import "CHCSVParser.h"
-#import "HYKLineModel.h"
 #import "MJExtension.h"
-#import "HYKLineView.h"
 #import "HYStockChart.h"
-#import "HYTimeLineModel.h"
-#import "HYTimeLine.h"
-#import "HYTimeLineView.h"
-#import "HYTimeLineGroupModel.h"
 
 
-@interface ViewController ()
+@interface ViewController ()<HYStockChartViewDataSource>
 
 @property(nonatomic,strong) HYStockChartView *stockView;
 
@@ -31,25 +25,19 @@
 
 @property(nonatomic,weak) UIView *baseView;
 
+@property(nonatomic,strong) HYStockChartView *stockChartView;
+
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-//    formatter.dateStyle = kCFDateFormatterShortStyle;
-    formatter.dateFormat = @"HH:mm";
-    formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
-    NSString *dateStr = @"09:11";
-    NSDate *date = [formatter dateFromString:dateStr];
-    
-    
+//    [self.timeLineView setBackgroundColor:[UIColor whiteColor]];
 //    self.kLineView.backgroundColor = [UIColor whiteColor];
-    [self.timeLineView setBackgroundColor:[UIColor whiteColor]];
-    [self.updateDataBtn setTitle:@"更新数据" forState:UIControlStateNormal];
-    self.updateDataBtn.backgroundColor = [UIColor greenColor];
+//    [self.updateDataBtn setTitle:@"更新数据" forState:UIControlStateNormal];
+//    self.updateDataBtn.backgroundColor = [UIColor greenColor];
+    self.stockChartView.backgroundColor = [UIColor yellowColor];
 }
 
 #pragma mark set&get方法
@@ -103,29 +91,61 @@
     return _timeLineView;
 }
 
-
--(void)viewDidLayoutSubviews
+#pragma mark stockChartView的get方法
+-(HYStockChartView *)stockChartView
 {
-    [super viewDidLayoutSubviews];
+    if (!_stockChartView) {
+        _stockChartView = [HYStockChartView new];
+        _stockChartView.itemModels = @[
+            [HYStockChartViewItemModel itemModelWithTitle:@"时分" type:HYStockChartCenterViewTypeTimeLine],
+            [HYStockChartViewItemModel itemModelWithTitle:@"5日" type:HYStockChartCenterViewTypeTimeLine],
+            [HYStockChartViewItemModel itemModelWithTitle:@"日K" type:HYStockChartCenterViewTypeKLine],
+            [HYStockChartViewItemModel itemModelWithTitle:@"周K" type:HYStockChartCenterViewTypeKLine],
+            [HYStockChartViewItemModel itemModelWithTitle:@"月K" type:HYStockChartCenterViewTypeKLine],
+            [HYStockChartViewItemModel itemModelWithTitle:@"1月" type:HYStockChartCenterViewTypeKLine],
+            [HYStockChartViewItemModel itemModelWithTitle:@"1年" type:HYStockChartCenterViewTypeKLine],
+            [HYStockChartViewItemModel itemModelWithTitle:@"3年" type:HYStockChartCenterViewTypeKLine],
+        ];
+        _stockChartView.dataSource = self;
+        [self.view addSubview:_stockChartView];
+        [_stockChartView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.view);
+        }];
+    }
+    return _stockChartView;
+}
+
+#pragma mark - 代理方法
+-(NSArray *)stockDatasWithIndex:(NSInteger)index
+{
+    if (index == 0 || index == 1) {
+        NSString *filePath = [[NSBundle mainBundle] pathForResource:@"TimeLine" ofType:@"plist"];
+        NSArray *arr = [NSArray arrayWithContentsOfFile:filePath];
+        NSArray *timeLineModels = [HYTimeLineModel objectArrayWithKeyValuesArray:arr];
+        return timeLineModels;
+    }else{
+        NSString *filePath = [[NSBundle mainBundle] pathForResource:@"KLine.plist" ofType:nil];
+        //    NSArray *arr = [NSArray arrayWithContentsOfCSVURL:URL options:CHCSVParserOptionsUsesFirstLineAsKeys];
+        NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
+        NSArray *modelArr = [HYKLineModel objectArrayWithKeyValuesArray:[dict objectForKey:@"GlobalQuotes"]];
+        return modelArr;
+    }
 }
 
 
 -(void)updateData
 {
-//    NSURL *URL = [[NSBundle mainBundle] URLForResource:@"stock.csv" withExtension:nil];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"KLine.plist" ofType:nil];
 //    NSArray *arr = [NSArray arrayWithContentsOfCSVURL:URL options:CHCSVParserOptionsUsesFirstLineAsKeys];
-//    NSArray *modelArr = [HYKLineModel objectArrayWithKeyValuesArray:arr];
-//    self.kLineView.kLineModels = modelArr;
+    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    NSArray *modelArr = [HYKLineModel objectArrayWithKeyValuesArray:[dict objectForKey:@"GlobalQuotes"]];
+    self.kLineView.kLineModels = modelArr;
     
 //    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"KLine" ofType:@"plist"];
 //    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
 //    NSArray *kLineModelArr = [HYKLineModel objectArrayWithKeyValuesArray:dict[@"GlobalQuotes"]];
 //    self.kLineView.kLineModels = kLineModelArr;
     
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"TimeLine" ofType:@"plist"];
-    NSArray *arr = [NSArray arrayWithContentsOfFile:filePath];
-    NSArray *timeLineModels = [HYTimeLineModel objectArrayWithKeyValuesArray:arr];
-    self.timeLineView.timeLineGroupModel = [HYTimeLineGroupModel  groupModelWithTimeModels:timeLineModels lastDayEndPrice:0];
 }
 
 - (void)didReceiveMemoryWarning {

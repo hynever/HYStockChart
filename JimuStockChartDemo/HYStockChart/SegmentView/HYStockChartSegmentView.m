@@ -9,8 +9,15 @@
 #import "HYStockChartSegmentView.h"
 #import "Masonry.h"
 
+static NSInteger const HYStockChartSegmentStartTag = 2000;
+
+static NSInteger const HYStockChartSegmentIndicatorViewHeight = 2;
+
 @interface HYStockChartSegmentView ()
 
+@property(nonatomic,strong,readwrite) UIButton *selectedBtn;
+
+@property(nonatomic,strong) UIView *indicatorView;
 
 @end
 
@@ -27,6 +34,34 @@
     return self;
 }
 
+-(instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        
+    }
+    return self;
+}
+
+#pragma mark - get方法
+
+#pragma mark indicatorView的get方法
+-(UIView *)indicatorView
+{
+    if (!_indicatorView) {
+        _indicatorView = [UIView new];
+        _indicatorView.backgroundColor = [UIColor blackColor];
+        [self addSubview:_indicatorView];
+        [_indicatorView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(self.mas_bottom).offset(-HYStockChartSegmentIndicatorViewHeight);
+            make.height.equalTo(@(HYStockChartSegmentIndicatorViewHeight));
+            make.width.equalTo(@50);
+            make.centerX.equalTo(self);
+        }];
+    }
+    return _indicatorView;
+}
+
 #pragma mark - set方法
 #pragma mark items的set方法
 -(void)setItems:(NSArray *)items
@@ -39,11 +74,11 @@
     NSInteger count = items.count;
     UIButton *preBtn = nil;
     for (NSString *title in items) {
-        UIButton *btn = [self private_createButtonWithTitle:title tag:index];
+        UIButton *btn = [self private_createButtonWithTitle:title tag:HYStockChartSegmentStartTag+index];
         [self addSubview:btn];
         [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(self);
-            make.height.equalTo(@50);
+            make.top.equalTo(self.mas_top);
+            make.bottom.equalTo(self.mas_bottom).offset(-2);
             make.width.equalTo(self).multipliedBy(1.0f/count);
             if (preBtn) {
                 make.left.equalTo(preBtn.mas_right);
@@ -56,12 +91,39 @@
     }
 }
 
+-(void)setSelectedIndex:(NSUInteger)selectedIndex
+{
+    _selectedIndex = selectedIndex;
+    UIButton *btn = (UIButton *)[self viewWithTag:HYStockChartSegmentStartTag+selectedIndex];
+    NSAssert(btn, @"Segmetn的按钮还没有初始化完毕!");
+    [self event_segmentButtonClicked:btn];
+}
+
+-(void)setSelectedBtn:(UIButton *)selectedBtn
+{
+    if (_selectedBtn == selectedBtn) {
+        return;
+    }
+    _selectedBtn = selectedBtn;
+    _selectedIndex = selectedBtn.tag - HYStockChartSegmentStartTag;
+    [self.indicatorView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.mas_bottom).offset(-HYStockChartSegmentIndicatorViewHeight);
+        make.height.equalTo(@(HYStockChartSegmentIndicatorViewHeight));
+        make.width.equalTo(@50);
+        make.centerX.equalTo(selectedBtn.mas_centerX);
+    }];
+    [UIView animateWithDuration:0.2f animations:^{
+        [self layoutIfNeeded];
+    }];
+}
+
 #pragma mark - 私有方法
 #pragma mark 根据title创建一个button
 -(UIButton *)private_createButtonWithTitle:(NSString *)title tag:(NSInteger)tag
 {
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+//    [btn setBackgroundColor:[self randomColor]];
     btn.tag = tag;
     [btn addTarget:self action:@selector(event_segmentButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [btn setTitle:title forState:UIControlStateNormal];
@@ -71,10 +133,19 @@
 #pragma mark - 事件执行方法
 -(void)event_segmentButtonClicked:(UIButton *)btn
 {
+    self.selectedBtn = btn;
     if (self.delegate && [self.delegate respondsToSelector:@selector(hyStockChartSegmentView:clickSegmentButtonIndex:)]) {
-        [self.delegate hyStockChartSegmentView:self clickSegmentButtonIndex:btn.tag];
+        [self.delegate hyStockChartSegmentView:self clickSegmentButtonIndex:btn.tag-HYStockChartSegmentStartTag];
     }
 }
+
+//- (UIColor *)randomColor {
+//    CGFloat hue = ( arc4random() % 256 / 256.0 );  //  0.0 to 1.0
+//    CGFloat saturation = ( arc4random() % 128 / 256.0 ) + 0.5;  //  0.5 to 1.0, away from white
+//    CGFloat brightness = ( arc4random() % 128 / 256.0 ) + 0.5;  //  0.5 to 1.0, away from black
+//    return [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
+//}
+
 
 
 @end

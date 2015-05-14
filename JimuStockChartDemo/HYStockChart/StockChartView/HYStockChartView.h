@@ -49,8 +49,6 @@ typedef NS_ENUM(NSUInteger, HYStockChartCenterViewType){
 
 /************************代理************************/
 @protocol HYStockChartViewDelegate <NSObject>
-
-@optional
 @end
 
 /************************数据源************************/

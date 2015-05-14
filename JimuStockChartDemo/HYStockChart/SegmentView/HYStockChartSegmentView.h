@@ -22,6 +22,8 @@
 
 @property(nonatomic,weak) id<HYStockChartSegmentViewDelegate> delegate;
 
+@property(nonatomic,assign) NSUInteger selectedIndex;
+
 @end
 
 
