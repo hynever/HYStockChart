@@ -209,7 +209,7 @@
     
     //数组个数
     CGFloat scrollViewWidth = self.scrollView.frame.size.width;
-    CGFloat needDrawKLineCount = (scrollViewWidth - lineGap)/(lineGap+lineWidth);
+    NSInteger needDrawKLineCount = (scrollViewWidth - lineGap)/(lineGap+lineWidth);
     
     //起始位置
     NSInteger needDrawKLineStartIndex = self.needDrawStartIndex;
