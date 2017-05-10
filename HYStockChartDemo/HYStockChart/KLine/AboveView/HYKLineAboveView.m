@@ -174,6 +174,7 @@
     [self mas_updateConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@(kLineViewWidth));
     }];
+    [self setNeedsLayout];
     [self layoutIfNeeded];
     //更新scrollView的contentSize
     self.scrollView.contentSize = CGSizeMake(kLineViewWidth, self.scrollView.contentSize.height);
