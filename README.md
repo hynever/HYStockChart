@@ -3,4 +3,4 @@
 
 <strong>积木股票app的K线图demo。<a href="https://itunes.apple.com/cn/app/ji-mu-gu-piao/id1037697368?ls=1&mt=8">欢迎点击下载体验</a></strong>
 
-<img src="http://i4.tietuku.com/6e9e1c3aa67affa2.gif">
+<img src="http://7xqenu.com1.z0.glb.clouddn.com/o_1bfp5d4vfldorf41oqm1omf13am7.gif">
